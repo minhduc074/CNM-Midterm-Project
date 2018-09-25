@@ -39,7 +39,7 @@ user.get("/login/:username/:password", function(req, res) {
 
 })
 
-user.get("/register/:username/:password", function(req, res) {
+user.post("/register/:username/:password", function(req, res) {
     var username = req.params.username;
     var password = req.params.password;
     console.log(username + " " + password);

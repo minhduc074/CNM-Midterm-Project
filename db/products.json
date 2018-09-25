@@ -1,10 +1,8 @@
-{
-    "products": [
-        { "Name": "Cheese", "Price": 2.50, "Location": "Refrigerated foods" },
-        { "Name": "Crisps", "Price": 3, "Location": "the Snack isle" },
-        { "Name": "Pizza", "Price": 4, "Location": "Refrigerated foods" },
-        { "Name": "Chocolate", "Price": 1.50, "Location": "the Snack isle" },
-        { "Name": "Self-raising flour", "Price": 1.50, "Location": "Home baking" },
-        { "Name": "Ground almonds", "Price": 3, "Location": "Home baking" }
-    ]
-}
+[
+    { "ID": "1", "Name": "Cheese", "Price": 2.50, "Location": "Refrigerated foods" },
+    { "ID": "2", "Name": "Crisps", "Price": 3, "Location": "the Snack isle" },
+    { "ID": "3", "Name": "Pizza", "Price": 4, "Location": "Refrigerated foods" },
+    { "ID": "4", "Name": "Chocolate", "Price": 1.50, "Location": "the Snack isle" },
+    { "ID": "5", "Name": "Self-raising flour", "Price": 1.50, "Location": "Home baking" },
+    { "ID": "6", "Name": "Ground almonds", "Price": 3, "Location": "Home baking" }
+]
