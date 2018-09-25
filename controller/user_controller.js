@@ -42,6 +42,7 @@ user.get("/login/:username/:password", function(req, res) {
 user.get("/register/:username/:password", function(req, res) {
     var username = req.params.username;
     var password = req.params.password;
+    console.log(username + " " + password);
 
     var db_password = find_user(username);
     if (db_password === null) {
@@ -50,6 +51,19 @@ user.get("/register/:username/:password", function(req, res) {
             "password": password
         }
 
+        user_db.push(newuser);
+
+        fs.writeFile('./db/users.json', JSON.stringify(user_db), function(err) {
+            if (err) return console.log(err);
+        });
+
+        res.writeHead(200, { 'Content-Type': 'text/json' });
+        var body = { "username": username, "reason": "Register success" };
+        res.end(JSON.stringify(body));
+    } else {
+        res.writeHead(405, { 'Content-Type': 'text/json' });
+        var body = { "username": username, "reason": "User already exits" };
+        res.end(JSON.stringify(body));
     }
 })
 
