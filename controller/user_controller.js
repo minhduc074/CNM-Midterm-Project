@@ -22,8 +22,9 @@ function authenticate(username, password) {
     else return false;
 }
 
-user.get("/login/", function(req, res) {
+user.post("/login/", function(req, res) {
     var body = req.body;
+    console.log(body);
     var username = body.username;
     var password = body.password;
 
@@ -38,13 +39,13 @@ user.get("/login/", function(req, res) {
         res.writeHead(200, { 'Content-Type': 'text/json' });
         var body = { "username": username, "reason": "Login success" }
         res.end(JSON.stringify(body));
-        parse
     }
 
 })
 
 user.post("/register/", function(req, res) {
     var body = req.body;
+    console.log(body);
     var username = body.username;
     var password = body.password;
     console.log(username + " " + password);

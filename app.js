@@ -10,7 +10,7 @@ app.use(morgan('dev'));
 var https = require("http").createServer(app);
 https.listen(3000);
 
-app.get("/login", user);
+app.post("/login", user);
 app.post("/register", user);
 
 app.get("/products/:id", products);
