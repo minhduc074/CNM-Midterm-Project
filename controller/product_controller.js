@@ -2,6 +2,8 @@ var express = require('express');
 var products = express.Router();
 var fs = require('fs');
 var products_db = JSON.parse(fs.readFileSync('./db/products.json', 'utf8'));
+var bodyParser = require('body-parser');
+products.use(bodyParser.json());
 
 function find_product_by_id(id) {
     for (var i = 0; i < products_db.length; i++) {

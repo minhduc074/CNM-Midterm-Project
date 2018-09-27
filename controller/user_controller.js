@@ -2,6 +2,8 @@ var express = require('express');
 var user = express.Router();
 var fs = require('fs');
 var user_db = JSON.parse(fs.readFileSync('./db/users.json', 'utf8'));
+var bodyParser = require('body-parser');
+user.use(bodyParser.json());
 
 function find_user(username) {
     for (var i = 0; i < user_db.length; i++) {
@@ -20,9 +22,10 @@ function authenticate(username, password) {
     else return false;
 }
 
-user.get("/login/:username/:password", function(req, res) {
-    var username = req.params.username;
-    var password = req.params.password;
+user.get("/login/", function(req, res) {
+    var body = req.body;
+    var username = body.username;
+    var password = body.password;
 
     console.log(username + " " + password);
     if (!authenticate(username, password)) {
@@ -35,13 +38,15 @@ user.get("/login/:username/:password", function(req, res) {
         res.writeHead(200, { 'Content-Type': 'text/json' });
         var body = { "username": username, "reason": "Login success" }
         res.end(JSON.stringify(body));
+        parse
     }
 
 })
 
-user.post("/register/:username/:password", function(req, res) {
-    var username = req.params.username;
-    var password = req.params.password;
+user.post("/register/", function(req, res) {
+    var body = req.body;
+    var username = body.username;
+    var password = body.password;
     console.log(username + " " + password);
 
     var db_password = find_user(username);
