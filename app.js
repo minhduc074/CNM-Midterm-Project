@@ -8,7 +8,9 @@ app.use(morgan('dev'));
 
 
 var https = require("http").createServer(app);
-https.listen(3000);
+app.listen(process.env.PORT || 3000, function() {
+    console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+});
 
 app.post("/login", user);
 app.post("/register", user);
