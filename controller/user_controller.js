@@ -15,13 +15,11 @@ user.post("/login/", function(req, res) {
 
     console.log(username + " " + password);
     user_db.authenticate(username, password).then(function() {
-        console.log("200");
         res.writeHead(200, { 'Content-Type': 'text/json' });
         var body = { "username": username, "reason": "Login success" }
         res.end(JSON.stringify(body));
     }).catch(function() {
 
-        console.log("401");
         res.writeHead(401, { 'Content-Type': 'text/json' });
         var body = { "username": username, "reason": "incorrect username/password" }
         res.end(JSON.stringify(body));
