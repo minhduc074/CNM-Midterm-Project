@@ -7,7 +7,6 @@ var morgan = require('morgan');
 app.use(morgan('dev'));
 
 
-var https = require("http").createServer(app);
 var server = app.listen(process.env.PORT || 3000, function() {
     var host = server.address().address;
     var port = server.address().port;
@@ -22,7 +21,3 @@ app.get("/products", products);
 
 app.post("./ticket/:username/:password", ticket);
 app.get("./ticket/:username/:password", ticket);
-
-app.get('/', (req, res) => {
-    res.end("test")
-});
