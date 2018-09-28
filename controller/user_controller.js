@@ -1,26 +1,11 @@
 var express = require('express');
 var user = express.Router();
-var fs = require('fs');
-var user_db = JSON.parse(fs.readFileSync('./db/users.json', 'utf8'));
+
 var bodyParser = require('body-parser');
 user.use(bodyParser.json());
 
-function find_user(username) {
-    for (var i = 0; i < user_db.length; i++) {
-        if (user_db[i].username.toString() === username)
-            return user_db[i].password;
-    }
-    return null;
-}
+var user_db = require("../model/users_model");
 
-function authenticate(username, password) {
-    var db_password = find_user(username);
-    if (db_password === null)
-        return false;
-    if (db_password.toString() === password.toString())
-        return true;
-    else return false;
-}
 
 user.post("/login/", function(req, res) {
     var body = req.body;
@@ -29,17 +14,18 @@ user.post("/login/", function(req, res) {
     var password = body.password;
 
     console.log(username + " " + password);
-    if (!authenticate(username, password)) {
-        console.log("401");
-        res.writeHead(401, { 'Content-Type': 'text/json' });
-        var body = { "username": username, "reason": "incorrect username/password" }
-        res.end(JSON.stringify(body));
-    } else {
+    user_db.authenticate(username, password).then(function() {
         console.log("200");
         res.writeHead(200, { 'Content-Type': 'text/json' });
         var body = { "username": username, "reason": "Login success" }
         res.end(JSON.stringify(body));
-    }
+    }).catch(function() {
+
+        console.log("401");
+        res.writeHead(401, { 'Content-Type': 'text/json' });
+        var body = { "username": username, "reason": "incorrect username/password" }
+        res.end(JSON.stringify(body));
+    });
 
 })
 
@@ -50,7 +36,7 @@ user.post("/register/", function(req, res) {
     var password = body.password;
     console.log(username + " " + password);
 
-    var db_password = find_user(username);
+    var db_password = user_db.find_user(username);
     if (db_password === null) {
         var newuser = {
             "username": username,

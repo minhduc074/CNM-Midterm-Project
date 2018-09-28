@@ -4,7 +4,8 @@
     "private": true,
     "dependencies": {
         "express": "*",
-        "morgan": "^1.9.1"
+        "morgan": "^1.9.1",
+        "cros": "*"
     },
     "main": "app.js",
     "scripts": {
