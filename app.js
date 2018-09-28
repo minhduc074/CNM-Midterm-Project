@@ -22,3 +22,7 @@ app.get("/products", products);
 
 app.post("./ticket/:username/:password", ticket);
 app.get("./ticket/:username/:password", ticket);
+
+app.get('/', (req, res) => {
+    res.end("test")
+});
