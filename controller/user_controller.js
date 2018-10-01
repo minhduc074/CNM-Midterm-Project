@@ -40,7 +40,7 @@ user.post("/register/", function(req, res) {
         var body = { "username": username, "reason": resolve };
         res.end(JSON.stringify(body));
     }).catch(function(reject) {
-        res.writeHead(405, { 'Content-Type': 'text/json' });
+        res.writeHead(400, { 'Content-Type': 'text/json' });
         var body = { "username": username, "reason": reject };
         res.end(JSON.stringify(body));
     })

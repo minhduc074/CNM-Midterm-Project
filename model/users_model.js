@@ -41,7 +41,7 @@ exports.add_new = function(username, password) {
             fs.writeFile('./db/users.json', JSON.stringify(user_db), function(err) {
                 if (err) return console.log(err);
             });
-            resolve("Register success");
+            resolve("Register successfully");
 
         });
     });

@@ -27,6 +27,7 @@ app.post("/register", user);
 app.get("/products/id/:id", products);
 app.get("/products/name/:name", products);
 app.get("/products", products);
+app.post("/products", products);
 
 app.post("./ticket/:username/:password", ticket);
 app.get("./ticket/:username/:password", ticket);

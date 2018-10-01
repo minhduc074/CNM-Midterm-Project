@@ -35,5 +35,23 @@ products.get("/products", function(req, res) {
     res.end(null);
 });
 
+products.post("/products", function(req, res) {
+    var body = req.body;
+    console.log(body);
+    var Name = body.Name;
+    var Price = body.Price;
+    var Location = body.Location;
+    products_db.add(Name, Price, Location).then(function(resolve) {
+        console.log("200");
+        res.writeHead(200, { 'Content-Type': 'text/json' });
+        var body = { "Name": Name, "reason": resolve }
+        res.end(JSON.stringify(body));
+    }).catch(function(reject) {
+        console.log("400");
+        res.writeHead(400, { 'Content-Type': 'text/json' });
+        var retbody = { "Name": Name, "reason": reject }
+        res.end(JSON.stringify(retbody));
+    });
+});
 
 module.exports = products;
