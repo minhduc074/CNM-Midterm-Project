@@ -32,29 +32,18 @@ user.post("/register/", function(req, res) {
     console.log(body);
     var username = body.username;
     var password = body.password;
-    console.log(username + " " + password);
+    console.log("user.post" + username + " " + password);
 
-    var db_password = user_db.find_user(username);
-    if (db_password === null) {
-        var newuser = {
-            "username": username,
-            "password": password
-        }
-
-        user_db.push(newuser);
-
-        fs.writeFile('./db/users.json', JSON.stringify(user_db), function(err) {
-            if (err) return console.log(err);
-        });
+    user_db.add_new(username, password).then(function(resolve) {
 
         res.writeHead(200, { 'Content-Type': 'text/json' });
-        var body = { "username": username, "reason": "Register success" };
+        var body = { "username": username, "reason": resolve };
         res.end(JSON.stringify(body));
-    } else {
+    }).catch(function(reject) {
         res.writeHead(405, { 'Content-Type': 'text/json' });
-        var body = { "username": username, "reason": "User already exits" };
+        var body = { "username": username, "reason": reject };
         res.end(JSON.stringify(body));
-    }
+    })
 })
 
 

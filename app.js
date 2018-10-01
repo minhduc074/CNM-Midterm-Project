@@ -6,6 +6,15 @@ var ticket = require("./controller/ticket_controller");
 var morgan = require('morgan');
 app.use(morgan('dev'));
 
+morgan(function(tokens, req, res) {
+    return [
+        tokens.method(req, res),
+        tokens.url(req, res),
+        tokens.status(req, res),
+        tokens.res(req, res, 'content-length'), '-',
+        tokens['response-time'](req, res), 'ms'
+    ].join(' ')
+})
 
 var https = require("http").createServer(app);
 https.listen(process.env.PORT || 3000, function() {
