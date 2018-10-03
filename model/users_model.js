@@ -1,15 +1,20 @@
 var fs = require('fs');
 var user_db = JSON.parse(fs.readFileSync('./db/users.json', 'utf8'));
 
+var database = require("./../db/sql_db");
+
 find_user = function(username) {
     console.log("find_user function: " + username);
-    return new Promise(function(resolve, reject) {
-        for (var i = 0; i < user_db.length; i++) {
-            if (user_db[i].username.toString() === username)
-                resolve(user_db[i].password);
-        }
-        reject(null);
-    })
+    var query = "SELECT * FROM `users` WHERE username='" + username + "'";
+    console.log("query = " + query);
+    return database.query_db(query);
+}
+
+add_user = function(username, password) {
+    console.log("add_user function: " + username);
+    var query = "INSERT INTO `users` (`username`, `password`) VALUES ('" + username + "', ' " + password + "')";
+    console.log("query = " + query);
+    return database.query_db(query);
 }
 
 exports.authenticate = function(username, password) {
@@ -37,11 +42,12 @@ exports.add_new = function(username, password) {
                 "username": username,
                 "password": password
             };
-            user_db.push(newuser);
-            fs.writeFile('./db/users.json', JSON.stringify(user_db), function(err) {
-                if (err) return console.log(err);
-            });
-            resolve("Register successfully");
+            add_user(username, password).then(function(res) {
+                resolve("Register successfully");
+            }).catch(function(rej) {
+                reject(rej)
+            })
+
 
         });
     });
