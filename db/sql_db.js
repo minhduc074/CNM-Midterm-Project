@@ -2,20 +2,20 @@ var mysql = require('mysql');
 
 var createConnection = () => {
     return mysql.createConnection({
-        host: 'sql3.freemysqlhosting.net',
+        host: 'localhost',
         port: 3306,
-        user: 'sql3259605',
-        password: '5lA57qMDKA',
-        database: 'sql3259605'
+        user: 'root',
+        password: '',
+        database: 'shopping_cart'
     });
 }
 
 exports.query_db = sql => {
-    return new Promise((resolve, reject) => {
+    return new Promise(function(resolve, reject) {
         var cn = createConnection();
         cn.connect();
         console.log("Connect to database successfully");
-        cn.query(sql, (err, rows, fields) => {
+        cn.query(sql, function(err, rows, fields) {
             if (err) {
                 console.log("err: " + err);
                 reject(err);
