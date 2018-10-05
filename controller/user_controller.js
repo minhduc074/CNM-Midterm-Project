@@ -14,9 +14,9 @@ user.post("/login/", function(req, res) {
     var password = body.password;
 
     console.log(username + " " + password);
-    user_db.authenticate(username, password).then(function() {
+    user_db.authenticate(username, password).then(function(user) {
         res.writeHead(200, { 'Content-Type': 'text/json' });
-        var body = { "username": username, "reason": "Login success" }
+        var body = { "username": username, "email": user.email, "phone": user.phone, "address": user.address }
         res.end(JSON.stringify(body));
     }).catch(function() {
 

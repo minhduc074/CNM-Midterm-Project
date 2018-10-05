@@ -21,11 +21,13 @@ exports.authenticate = function(username, password) {
     return new Promise(function(resolve, reject) {
         find_user(username).then(function(user) {
             console.log(user);
-            if (user.length === 0)
+            if (Object.keys(user).length == 0) {
+                reject("Cannot find this user");
+            } else if (user[0].password.trim() == password.trim()) {
+                resolve(user[0]);
+            } else {
                 reject();
-            if (user[0].password.trim() == password.trim())
-                resolve();
-            else reject();
+            }
         }).catch(function(rej) {
             console.log(rej);
             reject();
@@ -35,19 +37,15 @@ exports.authenticate = function(username, password) {
 
 exports.add_new = function(username, password) {
     return new Promise(function(resolve, reject) {
-        console.log("1");
         find_user(username).then(function(find_user_resolve) {
-            console.log("2");
             console.log(find_user_resolve);
             if (find_user_resolve.length > 0) {
                 reject("User already exits");
             } else {
                 add_user(username, password).then(function(add_user_resolve) {
                     console.log(add_user_resolve);
-                    console.log("3");
                     resolve("Register successfully");
                 }).catch(function(add_user_resolve) {
-                    console.log("4");
                     reject(rej)
                 })
             }
@@ -55,12 +53,10 @@ exports.add_new = function(username, password) {
             console.log(find_user_reject);
             add_user(username, password).then(function(add_user_resolve) {
                 console.log(add_user_resolve);
-                console.log("3");
                 resolve("Register successfully");
             }).catch(function(add_user_resolve) {
-                console.log("4");
                 reject(rej)
             })
         });
     });
-}
+};

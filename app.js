@@ -24,8 +24,7 @@ https.listen(process.env.PORT || 3000, function() {
 app.post("/login", user);
 app.post("/register", user);
 
-app.get("/products/id/:id", products);
-app.get("/products/name/:name", products);
+app.get("/products/:key", products);
 app.get("/products", products);
 app.post("/products", products);
 

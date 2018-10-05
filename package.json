@@ -5,7 +5,8 @@
     "dependencies": {
         "express": "*",
         "morgan": "^1.9.1",
-        "pg": "^7.5.0"
+        "pg": "^7.5.0",
+        "mysql": "*"
     },
     "main": "app.js",
     "scripts": {
