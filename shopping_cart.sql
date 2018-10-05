@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 04, 2018 at 01:00 PM
+-- Generation Time: Oct 05, 2018 at 12:54 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -72,8 +72,18 @@ CREATE TABLE `products` (
   `name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `price` int(11) NOT NULL,
   `description` varchar(5000) CHARACTER SET utf8 DEFAULT NULL,
-  `image_url` varchar(255) CHARACTER SET utf8 DEFAULT NULL
+  `image_url` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `price`, `description`, `image_url`, `type`) VALUES
+(18, 'Name', 1234, 'Description', 'Image_url', ''),
+(19, 'Name', 1234, 'Description', 'Image_url', ''),
+(20, 'Name', 1234, 'Description', 'Image_url', '');
 
 -- --------------------------------------------------------
 
@@ -144,7 +154,7 @@ ALTER TABLE `carts`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
