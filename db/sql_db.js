@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+/*var mysql = require('mysql');
 
 var createConnection = () => {
     return mysql.createConnection({
@@ -28,3 +28,4 @@ exports.query_db = sql => {
         });
     });
 }
+*/
