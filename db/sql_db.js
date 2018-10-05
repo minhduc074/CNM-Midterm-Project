@@ -2,11 +2,11 @@ var mysql = require('mysql');
 
 var createConnection = () => {
     return mysql.createConnection({
-        host: 'localhost',
-        port: 3306,
-        user: 'root',
-        password: '',
-        database: 'shopping_cart'
+        host: 'ec2-54-243-212-122.compute-1.amazonaws.com',
+        port: 5432,
+        user: 'vzsgkahaamsjwu',
+        password: 'g6JH09_xEBVTYiLg0YQztAcE3F',
+        database: 'daem725mdgoq0g'
     });
 }
 
