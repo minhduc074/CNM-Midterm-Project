@@ -11,6 +11,7 @@ const createConnection = () => {
 };
 
 exports.query_db = sql => {
+    console.log("Query sql: " + sql);
     return new Promise((resolve, reject) => {
         const cn = createConnection();
         cn.connect();

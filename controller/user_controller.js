@@ -10,15 +10,18 @@ const ticket = require("./ticket_controller");
 
 user.post("/login/", (req, res) => {
     const body = req.body;
-    console.log(body);
+    console.log("Post login Entry: " + body);
     const username = body.username;
     const password = body.password;
 
-    console.log(`${username} ${password}`);
+    const accessToken = ticket.generateAccessToken(user);
+    const refreshToken = ticket.generateRefreshToken();
     user_db.authenticate(username, password).then(user => {
-        authRepo.updateRefreshToken(username, rfToken).then(() => {
-            const accessToken = ticket.generateAccessToken(user);
-            const refreshToken = ticket.generateRefreshToken();
+        console.log("user_db.authenticate: " + user);
+        console.log(1);
+        ticket.generateRefreshToken();
+        ticket.updateRefreshToken(username, refreshToken).then(() => {
+            console.log(2);
 
             res.writeHead(200, { 'Content-Type': 'text/json' });
             const body = {
@@ -29,14 +32,17 @@ user.post("/login/", (req, res) => {
                 "access_token": accessToken,
                 "refresh_token": refreshToken
             };
+            console.log(3);
             res.end(JSON.stringify(body));
         }).catch(err => {
+            console.log(4);
             console.log(err);
             res.statusCode = 500;
             res.end('Server Error');
-        })
+        });
     }).catch(() => {
-
+        console.log(5);
+        console.log("401 incorrect username/password ");
         res.writeHead(401, { 'Content-Type': 'text/json' });
         const body = { "username": username, "reason": "incorrect username/password" };
         res.end(JSON.stringify(body));
