@@ -6,6 +6,10 @@
         "express": "*",
         "morgan": "^1.9.1",
         "pg": "^7.5.0",
+        "crypto-js": "^3.1.9-1",
+        "jsonwebtoken": "^8.3.0",
+        "moment": "^2.22.2",
+        "rand-token": "^0.4.0",
         "mysql": "*"
     },
     "main": "app.js",

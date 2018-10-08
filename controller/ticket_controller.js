@@ -1,9 +1,55 @@
-var express = require('express');
+var jwt = require('jsonwebtoken');
+var rndToken = require('rand-token');
+var moment = require('moment');
 
-var user = express.Router();
-var fs = require('fs');
-var user_db = JSON.parse(fs.readFileSync('./db/users.json', 'utf8'));
+var ticket_db = require("../model/tickets_model");
 
+const SECRET = 'ABCDEF';
+const AC_LIFETIME = 600; // seconds
 
+exports.generateAccessToken = userEntity => {
+    var payload = {
+        user: userEntity,
+        info: 'more info'
+    }
 
-module.exports = user;
+    var token = jwt.sign(payload, SECRET, {
+        expiresIn: AC_LIFETIME
+    });
+
+    return token;
+}
+
+exports.verifyAccessToken = (req, res, next) => {
+    var token = req.headers['x-access-token'];
+    console.log(token);
+
+    if (token) {
+        jwt.verify(token, SECRET, (err, payload) => {
+            if (err) {
+                res.statusCode = 401;
+                res.json({
+                    msg: 'INVALID TOKEN',
+                    error: err
+                })
+            } else {
+                req.token_payload = payload;
+                next();
+            }
+        });
+    } else {
+        res.statusCode = 403;
+        res.json({
+            msg: 'NO_TOKEN'
+        })
+    }
+}
+
+exports.generateRefreshToken = () => {
+    const SIZE = 80;
+    return rndToken.generate(SIZE);
+}
+
+exports.updateRefreshToken = (userId, rfToken) => {
+    return ticket_db.updateRefreshToken(userId, rfToken);
+}

@@ -1,6 +1,6 @@
-var mysql = require('mysql');
+const mysql = require('mysql');
 
-var createConnection = () => {
+const createConnection = () => {
     return mysql.createConnection({
         host: 'localhost',
         port: 3306,
@@ -8,19 +8,19 @@ var createConnection = () => {
         password: '',
         database: 'shopping_cart'
     });
-}
+};
 
 exports.query_db = sql => {
-    return new Promise(function(resolve, reject) {
-        var cn = createConnection();
+    return new Promise((resolve, reject) => {
+        const cn = createConnection();
         cn.connect();
         console.log("Connect to database successfully");
-        cn.query(sql, function(err, rows, fields) {
+        cn.query(sql, (err, rows, fields) => {
             if (err) {
-                console.log("err: " + err);
+                console.log(`err: ${err}`);
                 reject(err);
             } else {
-                console.log("row: " + rows);
+                console.log(`row: ${rows}`);
                 resolve(rows);
             }
 

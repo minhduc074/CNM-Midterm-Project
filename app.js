@@ -1,22 +1,23 @@
-var express = require('express');
-var app = express();
-var user = require("./controller/user_controller");
-var products = require("./controller/product_controller");
-var ticket = require("./controller/ticket_controller");
-var morgan = require('morgan');
+const express = require('express');
+const app = express();
+const user = require("./controller/user_controller");
+const products = require("./controller/product_controller");
+const ticket = require("./controller/ticket_controller");
+const morgan = require('morgan');
+
+const verifyAccessToken = require('./controller/ticket_controller').verifyAccessToken;
+
 app.use(morgan('dev'));
 
-morgan(function(tokens, req, res) {
-    return [
-        tokens.method(req, res),
-        tokens.url(req, res),
-        tokens.status(req, res),
-        tokens.res(req, res, 'content-length'), '-',
-        tokens['response-time'](req, res), 'ms'
-    ].join(' ')
-})
+morgan((tokens, req, res) => [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length'), '-',
+    tokens['response-time'](req, res), 'ms'
+].join(' '))
 
-var https = require("http").createServer(app);
+const https = require("http").createServer(app);
 https.listen(process.env.PORT || 3000, function() {
     console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
@@ -24,9 +25,6 @@ https.listen(process.env.PORT || 3000, function() {
 app.post("/login", user);
 app.post("/register", user);
 
-app.get("/products/:key", products);
-app.get("/products", products);
-app.post("/products", products);
-
-app.post("./ticket/:username/:password", ticket);
-app.get("./ticket/:username/:password", ticket);
+app.get("/products/:key", verifyAccessToken, products);
+app.get("/products", verifyAccessToken, products);
+app.post("/products", verifyAccessToken, products);
