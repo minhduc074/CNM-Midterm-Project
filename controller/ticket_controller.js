@@ -45,12 +45,10 @@ exports.verifyAccessToken = (req, res, next) => {
 }
 
 exports.generateRefreshToken = () => {
-    console.log(123);
     const SIZE = 80;
     return rndToken.generate(SIZE);
 }
 
 exports.updateRefreshToken = (userId, rfToken) => {
-    console.log(10);
     return ticket_db.updateRefreshToken(userId, rfToken);
 }

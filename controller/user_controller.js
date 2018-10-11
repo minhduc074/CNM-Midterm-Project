@@ -18,10 +18,8 @@ user.post("/login/", (req, res) => {
     const refreshToken = ticket.generateRefreshToken();
     user_db.authenticate(username, password).then(user => {
         console.log("user_db.authenticate: " + user);
-        console.log(1);
         ticket.generateRefreshToken();
         ticket.updateRefreshToken(username, refreshToken).then(() => {
-            console.log(2);
 
             res.writeHead(200, { 'Content-Type': 'text/json' });
             const body = {
@@ -32,16 +30,13 @@ user.post("/login/", (req, res) => {
                 "access_token": accessToken,
                 "refresh_token": refreshToken
             };
-            console.log(3);
             res.end(JSON.stringify(body));
         }).catch(err => {
-            console.log(4);
             console.log(err);
             res.statusCode = 500;
             res.end('Server Error');
         });
     }).catch(() => {
-        console.log(5);
         console.log("401 incorrect username/password ");
         res.writeHead(401, { 'Content-Type': 'text/json' });
         const body = { "username": username, "reason": "incorrect username/password" };

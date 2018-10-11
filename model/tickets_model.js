@@ -4,7 +4,7 @@ var moment = require("moment");
 exports.updateRefreshToken = (userId, rfToken) => {
     return new Promise((resolve, reject) => {
 
-        var sql = `delete from ticket where user_id = '${userId}'`;
+        var sql = `DELETE FROM ticket WHERE user_id = '${userId}'`;
         database.query_db(sql) // delete
             .then(value => {
                 var rdt = moment().format('YYYY-MM-DD HH:mm:ss');
