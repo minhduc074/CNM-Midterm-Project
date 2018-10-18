@@ -36,7 +36,7 @@ exports.query_db = sql => {
                 resolve(rows);
             }
 
-            cn.end({ timeout: 60000 });
+            cn.end({ timeout: 10000 });
         });
         //cn.end();
     });
