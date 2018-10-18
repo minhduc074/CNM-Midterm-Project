@@ -12,7 +12,12 @@ const createConnection = () => {
 
 const createCnn = () => {
     return mysql.createConnection({
-        connectionString: 'mysql://b3fbb254808323:bb69f4d4@us-cdbr-iron-east-01.cleardb.net/heroku_579ee79817c6d61?reconnect=true'
+        //connectionString: 'mysql://b3fbb254808323:bb69f4d4@us-cdbr-iron-east-01.cleardb.net/heroku_579ee79817c6d61?reconnect=true'
+        host: 'us-cdbr-iron-east-01.cleardb.net',
+        port: 3306,
+        user: 'b3fbb254808323',
+        password: 'bb69f4d4',
+        database: 'heroku_579ee79817c6d61'
     });
 }
 
@@ -31,7 +36,8 @@ exports.query_db = sql => {
                 resolve(rows);
             }
 
-            cn.end();
+            //cn.end();
         });
+        cn.end();
     });
 }
