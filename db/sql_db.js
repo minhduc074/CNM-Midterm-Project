@@ -2,13 +2,19 @@ const mysql = require('mysql');
 
 const createConnection = () => {
     return mysql.createConnection({
-        host: 'localhost',
+        host: 'us-cdbr-iron-east-01.cleardb.net',
         port: 3306,
-        user: 'root',
-        password: '',
-        database: 'shopping_cart'
+        user: 'b3fbb254808323',
+        password: 'bb69f4d4',
+        database: 'heroku_579ee79817c6d61'
     });
 };
+
+const createCnn = () => {
+    return mysql.createConnection({
+        connectionString: 'mysql://b3fbb254808323:bb69f4d4@us-cdbr-iron-east-01.cleardb.net/heroku_579ee79817c6d61?reconnect=true'
+    });
+}
 
 exports.query_db = sql => {
     console.log("Query sql: " + sql);
