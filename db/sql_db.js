@@ -24,7 +24,7 @@ const createCnn = () => {
 exports.query_db = sql => {
     console.log("Query sql: " + sql);
     return new Promise((resolve, reject) => {
-        const cn = createCnn();
+        const cn = createConnection();
         cn.connect();
         console.log("Connect to database successfully");
         cn.query(sql, (err, rows, fields) => {
