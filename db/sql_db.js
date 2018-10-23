@@ -1,13 +1,24 @@
 const mysql = require('mysql');
 
 const createConnection = () => {
-    return mysql.createConnection({
-        host: 'localhost',
-        port: 3306,
-        user: 'root',
-        password: '',
-        database: 'shopping_cart'
-    });
+    if (app.settings.env === "development") {
+        return mysql.createConnection({
+            host: 'localhost',
+            port: 3306,
+            user: 'root',
+            password: '',
+            database: 'midterm_project'
+        });
+    } else {
+        return mysql.createConnection({
+            //connectionString: 'mysql://b3fbb254808323:bb69f4d4@us-cdbr-iron-east-01.cleardb.net/heroku_579ee79817c6d61?reconnect=true'
+            host: 'us-cdbr-iron-east-01.cleardb.net',
+            port: 3306,
+            user: 'b3fbb254808323',
+            password: 'bb69f4d4',
+            database: 'heroku_579ee79817c6d61'
+        });
+    }
 };
 
 const createCnn = () => {
@@ -24,7 +35,7 @@ const createCnn = () => {
 exports.query_db = sql => {
     console.log("Query sql: " + sql);
     return new Promise((resolve, reject) => {
-        const cn = createCnn();
+        const cn = createConnection();
         cn.connect();
         console.log("Connect to database successfully");
         cn.query(sql, (err, rows, fields) => {

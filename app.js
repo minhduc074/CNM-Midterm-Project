@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const user = require("./controller/user_controller");
-const products = require("./controller/product_controller");
 const ticket = require("./controller/ticket_controller");
 const morgan = require('morgan');
 
@@ -24,7 +23,3 @@ https.listen(process.env.PORT || 3000, function() {
 
 app.post("/login", user);
 app.post("/register", user);
-
-app.get("/products/:key", verifyAccessToken, products);
-app.get("/products", verifyAccessToken, products);
-app.post("/products", verifyAccessToken, products);
