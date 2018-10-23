@@ -4,7 +4,7 @@ const user = require("./controller/user_controller");
 const ticket = require("./controller/ticket_controller");
 const morgan = require('morgan');
 
-const verifyAccessToken = require('./controller/ticket_controller').verifyAccessToken;
+
 
 app.use(morgan('dev'));
 
