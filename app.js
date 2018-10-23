@@ -16,10 +16,9 @@ morgan((tokens, req, res) => [
     tokens['response-time'](req, res), 'ms'
 ].join(' '))
 
+app.use("/users", user);
+
 const https = require("http").createServer(app);
 https.listen(process.env.PORT || 3000, function() {
     console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
-
-app.post("/login", user);
-app.post("/register", user);

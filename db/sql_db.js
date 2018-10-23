@@ -1,4 +1,6 @@
 const mysql = require('mysql');
+const express = require('express');
+const app = express();
 
 const createConnection = () => {
     if (app.settings.env === "development") {
@@ -11,26 +13,15 @@ const createConnection = () => {
         });
     } else {
         return mysql.createConnection({
-            //connectionString: 'mysql://b3fbb254808323:bb69f4d4@us-cdbr-iron-east-01.cleardb.net/heroku_579ee79817c6d61?reconnect=true'
+            //connectionString: mysql://bf6dbeab1bb641:0997f35c@us-cdbr-iron-east-01.cleardb.net/heroku_226cb065f176ed4?reconnect=true
             host: 'us-cdbr-iron-east-01.cleardb.net',
             port: 3306,
-            user: 'b3fbb254808323',
-            password: 'bb69f4d4',
-            database: 'heroku_579ee79817c6d61'
+            user: 'bf6dbeab1bb641',
+            password: '0997f35c',
+            database: 'heroku_226cb065f176ed4'
         });
     }
 };
-
-const createCnn = () => {
-    return mysql.createConnection({
-        //connectionString: 'mysql://b3fbb254808323:bb69f4d4@us-cdbr-iron-east-01.cleardb.net/heroku_579ee79817c6d61?reconnect=true'
-        host: 'us-cdbr-iron-east-01.cleardb.net',
-        port: 3306,
-        user: 'b3fbb254808323',
-        password: 'bb69f4d4',
-        database: 'heroku_579ee79817c6d61'
-    });
-}
 
 exports.query_db = sql => {
     console.log("Query sql: " + sql);

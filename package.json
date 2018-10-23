@@ -9,7 +9,8 @@
         "jsonwebtoken": "^8.3.0",
         "moment": "^2.22.2",
         "rand-token": "^0.4.0",
-        "mysql": "*"
+        "mysql": "*",
+        "body-parser": "*"
     },
     "main": "app.js",
     "scripts": {

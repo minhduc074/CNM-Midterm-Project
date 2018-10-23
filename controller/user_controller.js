@@ -50,7 +50,7 @@ user.post("/register/", (req, res) => {
     console.log(body);
     const username = body.username;
     const password = body.password;
-    console.log(`user.post${username} ${password}`);
+    console.log(`user.post ${username} ${password}`);
 
     user_db.add_new(username, password).then(resolve => {
 
