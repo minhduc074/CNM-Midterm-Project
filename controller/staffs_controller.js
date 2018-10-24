@@ -1,24 +1,23 @@
 const express = require('express');
-const user = express.Router();
+const staffs = express.Router();
 
 const bodyParser = require('body-parser');
-user.use(bodyParser.json());
+staffs.use(bodyParser.json());
 
 const verifyAccessToken = require('./ticket_controller').verifyAccessToken;
 
-const user_db = require("../model/users_model");
+const staffs_db = require("../model/staffs_model");
 const ticket = require("./ticket_controller");
 
-
-user.post("/login/", (req, res) => {
+staffs.post("/login/", (req, res) => {
     const body = req.body;
     console.log("Post login Entry: " + body);
     const username = body.username;
     const password = body.password;
 
-    const accessToken = ticket.generateAccessToken(user);
+    const accessToken = ticket.generateAccessToken(staffs);
     const refreshToken = ticket.generateRefreshToken();
-    user_db.authenticate(username, password).then(user => {
+    staffs_db.authenticate(username, password).then(user => {
         console.log("user_db.authenticate: " + user);
         ticket.generateRefreshToken();
         ticket.updateRefreshToken(username, refreshToken).then(() => {
@@ -26,9 +25,7 @@ user.post("/login/", (req, res) => {
             res.writeHead(200, { 'Content-Type': 'text/json' });
             const body = {
                 "username": username,
-                "email": user.email,
-                "phone": user.phone,
-                "address": user.address,
+                "fullname": user.fullname,
                 "access_token": accessToken,
                 "refresh_token": refreshToken
             };
@@ -45,14 +42,14 @@ user.post("/login/", (req, res) => {
         res.end(JSON.stringify(body));
     });
 
-});
+})
 
-user.post("/register/", (req, res) => {
+staffs.post("/register/", (req, res) => {
     const users = req.body;
     console.log(users);
     console.log(`user.post ${users.username} ${users.password}`);
 
-    user_db.add_new(users).then(resolve => {
+    staffs_db.add_new(users).then(resolve => {
 
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "username": users.username, "reason": resolve };
@@ -64,39 +61,22 @@ user.post("/register/", (req, res) => {
     })
 });
 
-user.put("/address/", verifyAccessToken, (req, res) => {
-    const requset = req.body;
+staffs.post("/logout/", (req, res) => {
+    const users = req.body;
+    console.log(users);
+    console.log(`user.post ${users.username} ${users.password}`);
 
-    console.log("user.address " + requset.username + " " + requset.address);
-    user_db.update_address(requset.username, requset.address).then(resolve => {
-
+    ticket.updateRefreshToken(ticket.generateRefreshToken()).then(resolve => {
+        console.log(resolve);
         res.writeHead(200, { 'Content-Type': 'text/json' });
-        const body = { "username": requset.username, "reason": resolve };
+        const body = { "username": users.username, "reason": "Logout successfully" };
         res.end(JSON.stringify(body));
     }).catch(reject => {
-        res.writeHead(400, { 'Content-Type': 'text/json' });
-        const body = { "username": requset.username, "reason": reject };
+        console.log(reject);
+        res.writeHead(500, { 'Content-Type': 'text/json' });
+        const body = { "username": users.username, "reason": "Internal server error" };
         res.end(JSON.stringify(body));
     })
-
 })
 
-user.get("/address/:username", verifyAccessToken, (req, res) => {
-    var username = req.params.username;
-
-    console.log("user.address" + username);
-    user_db.get_address(username).then(resolve => {
-
-        res.writeHead(200, { 'Content-Type': 'text/json' });
-        //console.log(resolve);
-        const body = { "username": username, "address": resolve[0].address };
-        res.end(JSON.stringify(body));
-    }).catch(reject => {
-        res.writeHead(400, { 'Content-Type': 'text/json' });
-        const body = { "username": username, "reason": reject };
-        res.end(JSON.stringify(body));
-    })
-
-})
-
-module.exports = user;
+module.exports = staffs;
