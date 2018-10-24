@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const user = require("./controller/user_controller");
 const driver = require("./controller/driver_controller");
 const staffs = require("./controller/staffs_controller");
 //const ticket = require("./controller/ticket_controller");
@@ -18,7 +17,6 @@ morgan((tokens, req, res) => [
     tokens['response-time'](req, res), 'ms'
 ].join(' '))
 
-app.use("/users", user);
 app.use("/driver", driver);
 app.use('/staffs', staffs)
 

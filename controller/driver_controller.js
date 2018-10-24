@@ -6,7 +6,7 @@ driver.use(bodyParser.json());
 
 const verifyAccessToken = require('./ticket_controller').verifyAccessToken;
 
-const driver_model = require("../model/driver_model");
+const driver_db = require("../model/driver_model");
 const ticket = require("./ticket_controller");
 
 
@@ -14,7 +14,7 @@ driver.put("/address/", verifyAccessToken, (req, res) => {
     const request = req.body;
 
     console.log("driver.address " + request.username + " " + request.address);
-    driver_model.update_address(request.username, request.address).then(resolve => {
+    driver_db.update_address(request.username, request.address).then(resolve => {
 
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "username": request.username, "reason": resolve };
@@ -31,7 +31,7 @@ driver.get("/address/:username", verifyAccessToken, (req, res) => {
     var username = req.params.username;
 
     console.log("user.address" + username);
-    driver_model.get_address(username).then(resolve => {
+    driver_db.get_address(username).then(resolve => {
 
         res.writeHead(200, { 'Content-Type': 'text/json' });
         //console.log(resolve);
@@ -44,5 +44,58 @@ driver.get("/address/:username", verifyAccessToken, (req, res) => {
     })
 
 })
+
+driver.post("/login/", (req, res) => {
+    const body = req.body;
+    console.log("Post login Entry: " + body);
+    const username = body.username;
+    const password = body.password;
+
+    const accessToken = ticket.generateAccessToken(driver);
+    const refreshToken = ticket.generateRefreshToken();
+    driver_db.authenticate(username, password).then(driver => {
+        console.log("driver_db.authenticate: " + driver);
+        ticket.generateRefreshToken();
+        ticket.updateRefreshToken(username, refreshToken).then(() => {
+
+            res.writeHead(200, { 'Content-Type': 'text/json' });
+            const body = {
+                "username": username,
+                "address": driver.address,
+                "access_token": accessToken,
+                "refresh_token": refreshToken
+            };
+            res.end(JSON.stringify(body));
+        }).catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end('Server Error');
+        });
+    }).catch(() => {
+        console.log("401 incorrect username/password ");
+        res.writeHead(401, { 'Content-Type': 'text/json' });
+        const body = { "username": username, "reason": "incorrect username/password" };
+        res.end(JSON.stringify(body));
+    });
+
+})
+
+driver.post("/register/", (req, res) => {
+    const users = req.body;
+    console.log(users);
+    console.log(`driver.post ${users.username} ${users.password}`);
+
+    driver_db.add_new(users).then(resolve => {
+        console.log(resolve);
+        res.writeHead(200, { 'Content-Type': 'text/json' });
+        const body = { "username": users.username, "reason": resolve };
+        res.end(JSON.stringify(body));
+    }).catch(reject => {
+        console.log(reject);
+        res.writeHead(400, { 'Content-Type': 'text/json' });
+        const body = { "username": users.username, "reason": reject };
+        res.end(JSON.stringify(body));
+    })
+});
 
 module.exports = driver;
