@@ -4,7 +4,6 @@ const staffs = express.Router();
 const bodyParser = require('body-parser');
 staffs.use(bodyParser.json());
 
-const verifyAccessToken = require('./ticket_controller').verifyAccessToken;
 
 const staffs_db = require("../model/staffs_model");
 const ticket = require("./ticket_controller");
@@ -77,6 +76,6 @@ staffs.post("/logout/", (req, res) => {
         const body = { "username": users.username, "reason": "Internal server error" };
         res.end(JSON.stringify(body));
     })
-})
+});
 
 module.exports = staffs;
