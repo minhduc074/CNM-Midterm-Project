@@ -56,3 +56,19 @@ exports.add_new = (users) => new Promise((resolve, reject) => {
         })
     });
 });
+
+exports.update = (users) => new Promise((resolve, reject) => {
+    find_user(users.username).then(find_user_resolve => {
+        console.log(find_user_resolve);
+        if (find_user_resolve.length > 0) {
+            console.log(`update function: ${users.username}`);
+            const query = `UPDATE \`users\` SET \`password\`=${users.password},\`fullname\`=${users.fullname} WHERE \`username\`=${users.username}`;
+            console.log(`query = ${query}`);
+            return database.query_db(query);
+        } else {
+            reject("User doesn't exits");
+        }
+    }).catch(find_user_reject => {
+        reject("User doesn't exits");
+    });
+});

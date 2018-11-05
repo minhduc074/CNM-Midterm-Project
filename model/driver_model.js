@@ -10,7 +10,7 @@ find_driver = username => {
 
 add_driver = (users) => {
     console.log(`add_driver function: ${users.username}`);
-    const query = `INSERT INTO \`driver\` (\`username\`, \`status\`, \`address\`, \`password\`) VALUES ('${users.username}', '0','${users.address}', '${users.password}')`;
+    const query = `INSERT INTO \`driver\` (\`username\`, \`status\`, \`address\`, \`phone\`, \`password\`) VALUES ('${users.username}', '0','${users.address}','${users.phone}', '${users.password}')`;
     console.log(`query = ${query}`);
     return database.query_db(query);
 }

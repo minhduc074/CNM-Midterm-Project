@@ -78,4 +78,21 @@ staffs.post("/logout/", (req, res) => {
     })
 });
 
+staffs.post("/update/", (req, res) => {
+    const users = req.body;
+    console.log(users);
+    console.log(`user.post ${users.username} ${users.password}`);
+
+    staffs_db.update(users).then(resolve => {
+
+        res.writeHead(200, { 'Content-Type': 'text/json' });
+        const body = { "username": users.username, "reason": "Update successfully" };
+        res.end(JSON.stringify(body));
+    }).catch(reject => {
+        res.writeHead(500, { 'Content-Type': 'text/json' });
+        const body = { "username": users.username, "reason": "Internal server error" };
+        res.end(JSON.stringify(body));
+    })
+})
+
 module.exports = staffs;
