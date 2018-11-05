@@ -5,10 +5,12 @@ const staffs = require("./controller/staffs_controller");
 const customer = require("./controller/customer_controller")
     //const ticket = require("./controller/ticket_controller");
 const morgan = require('morgan');
+var cors = require('cors')
 
 
 
 app.use(morgan('dev'));
+app.use(cors());
 
 morgan((tokens, req, res) => [
     tokens.method(req, res),

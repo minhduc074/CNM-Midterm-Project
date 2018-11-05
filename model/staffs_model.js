@@ -18,7 +18,7 @@ add_user = (users) => {
 exports.authenticate = (username, password) => new Promise((resolve, reject) => {
     console.log("users_model:authenticate: Entry " + username + " " + password);
     find_user(username).then(user => {
-        console.log("users_model:authenticate: " + user[0].username + " " + user[0].password);
+        console.log("users_model:authenticate: " + user);
         if (Object.keys(user).length == 0) {
             reject("Cannot find this user");
         } else if (user[0].password.trim() == password.trim()) {
