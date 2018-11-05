@@ -84,11 +84,12 @@ staffs.post("/update/", (req, res) => {
     console.log(`user.post ${users.username} ${users.password}`);
 
     staffs_db.update(users).then(resolve => {
-
+        //console.log(resolve);
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "username": users.username, "reason": "Update successfully" };
         res.end(JSON.stringify(body));
     }).catch(reject => {
+        console.log(reject);
         res.writeHead(500, { 'Content-Type': 'text/json' });
         const body = { "username": users.username, "reason": "Internal server error" };
         res.end(JSON.stringify(body));

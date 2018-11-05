@@ -62,9 +62,14 @@ exports.update = (users) => new Promise((resolve, reject) => {
         console.log(find_user_resolve);
         if (find_user_resolve.length > 0) {
             console.log(`update function: ${users.username}`);
-            const query = `UPDATE \`users\` SET \`password\`=${users.password},\`fullname\`=${users.fullname} WHERE \`username\`=${users.username}`;
+            const query = `UPDATE \`users\` SET \`password\`=\"${users.password}\",\`fullname\`=\"${users.fullname}\" WHERE \`username\`=\"${users.username}\"`;
             console.log(`query = ${query}`);
-            return database.query_db(query);
+            database.query_db(query).then(sql_resolve => {
+                console.log(sql_resolve);
+                resolve("Register successfully");
+            }).catch(sql_reject => {
+                reject(sql_reject)
+            })
         } else {
             reject("User doesn't exits");
         }
