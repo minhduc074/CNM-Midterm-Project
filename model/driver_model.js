@@ -10,7 +10,7 @@ find_driver = username => {
 
 add_driver = (users) => {
     console.log(`add_driver function: ${users.username}`);
-    const query = `INSERT INTO \`driver\` (\`username\`, \`status\`, \`address\`, \`phone\`, \`password\`) VALUES ('${users.username}', '0','${users.address}','${users.phone}', '${users.password}')`;
+    const query = `INSERT INTO \`driver\` (\`username\`, \`status\`, \`address\`, \`phone\`, \`password\`, \`fullname\`) VALUES ('${users.username}', '0','${users.address}','${users.phone}', '${users.password}', '${users.fullname}')`;
     console.log(`query = ${query}`);
     return database.query_db(query);
 }
@@ -112,3 +112,24 @@ exports.get_address = (username) => new Promise((resolve, reject) => {
         reject();
     })
 })
+
+exports.update = (users) => new Promise((resolve, reject) => {
+    find_driver(users.username).then(find_user_resolve => {
+        console.log(find_user_resolve);
+        if (find_user_resolve.length > 0) {
+            console.log(`update function: ${users.username}`);
+            const query = `UPDATE \`driver\` SET \`address\`=\"${users.address}\", \`phone\`=\"${users.phone}\", \`password\`=\"${users.password}\",\`fullname\`=\"${users.fullname}\" WHERE \`username\`=\"${users.username}\"`;
+            console.log(`query = ${query}`);
+            database.query_db(query).then(sql_resolve => {
+                console.log(sql_resolve);
+                resolve("Register successfully");
+            }).catch(sql_reject => {
+                reject(sql_reject)
+            })
+        } else {
+            reject("User doesn't exits");
+        }
+    }).catch(find_user_reject => {
+        reject("User doesn't exits");
+    });
+});
