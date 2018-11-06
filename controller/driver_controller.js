@@ -56,7 +56,7 @@ driver.post("/login/", (req, res) => {
     driver_db.authenticate(username, password).then(driver => {
         console.log("driver_db.authenticate: " + driver);
         ticket.generateRefreshToken();
-        ticket.updateRefreshToken(username, refreshToken).then(() => {
+        ticket.updateRefreshToken("driver_" + username, refreshToken).then(() => {
 
             res.writeHead(200, { 'Content-Type': 'text/json' });
             const body = {
@@ -123,7 +123,7 @@ driver.post("/logout/", (req, res) => {
     console.log(users);
     console.log(`user.post ${users.username} ${users.password}`);
 
-    ticket.updateRefreshToken(ticket.generateRefreshToken()).then(resolve => {
+    ticket.updateRefreshToken("driver_" + users.username, ticket.generateRefreshToken()).then(resolve => {
         console.log(resolve);
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "username": users.username, "reason": "Logout successfully" };

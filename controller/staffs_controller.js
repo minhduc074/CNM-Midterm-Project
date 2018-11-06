@@ -19,7 +19,7 @@ staffs.post("/login/", (req, res) => {
     staffs_db.authenticate(username, password).then(user => {
         console.log("user_db.authenticate: " + user);
         ticket.generateRefreshToken();
-        ticket.updateRefreshToken(username, refreshToken).then(() => {
+        ticket.updateRefreshToken("staff_" + username, refreshToken).then(() => {
 
             res.writeHead(200, { 'Content-Type': 'text/json' });
             const body = {
@@ -65,7 +65,7 @@ staffs.post("/logout/", (req, res) => {
     console.log(users);
     console.log(`user.post ${users.username} ${users.password}`);
 
-    ticket.updateRefreshToken(ticket.generateRefreshToken()).then(resolve => {
+    ticket.updateRefreshToken("staff_" + users.username, ticket.generateRefreshToken()).then(resolve => {
         console.log(resolve);
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "username": users.username, "reason": "Logout successfully" };
