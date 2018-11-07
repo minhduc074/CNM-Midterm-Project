@@ -25,6 +25,7 @@ staffs.post("/login/", (req, res) => {
             const body = {
                 "username": username,
                 "fullname": user.fullname,
+                "role": user.role,
                 "access_token": accessToken,
                 "refresh_token": refreshToken
             };

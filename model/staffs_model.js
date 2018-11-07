@@ -9,7 +9,7 @@ find_user = username => {
 
 add_user = (users) => {
     console.log(`add_user function: ${users.username}`);
-    const query = `INSERT INTO \`users\` (\`username\`, \`password\`, \`fullname\`) VALUES ('${users.username}', '${users.password}', '${users.fullname}')`;
+    const query = `INSERT INTO \`users\` (\`username\`, \`password\`, \`fullname\`, \`role\`) VALUES ('${users.username}', '${users.password}', '${users.fullname}', '${users.role}')`;
     console.log(`query = ${query}`);
     return database.query_db(query);
 }
