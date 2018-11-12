@@ -53,7 +53,7 @@ customer_controller.get("/:id", (req, res) => {
 customer_controller.post("/status/", (req, res) => {
     const customer = req.body;
     console.log(customer);
-    customer.update_customer_status(customer).then(resolve => {
+    customer_db.update_customer_status(customer).then(resolve => {
         console.log(resolve);
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "id": customer.id, "fullname": customer.fullname, "status": customer.status };
@@ -69,7 +69,7 @@ customer_controller.post("/status/", (req, res) => {
 customer_controller.post("/address/", (req, res) => {
     const customer = req.body;
     console.log(customer);
-    customer.update_customer_address(customer).then(resolve => {
+    customer_db.update_customer_address(customer).then(resolve => {
         console.log(resolve);
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "id": customer.id, "fullname": customer.fullname, "address": customer.address };
@@ -82,13 +82,29 @@ customer_controller.post("/address/", (req, res) => {
     })
 })
 
-customer_controller.post("/customer/note/", (req, res) => {
+customer_controller.post("/note/", (req, res) => {
     const customer = req.body;
     console.log(customer);
-    customer.update_customer_note(customer).then(resolve => {
+    customer_db.update_customer_note(customer).then(resolve => {
         console.log(resolve);
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "id": customer.id, "fullname": customer.fullname, "note": customer.note };
+        res.end(JSON.stringify(body));
+    }).catch(reject => {
+        console.log(reject);
+        res.writeHead(500, { 'Content-Type': 'text/json' });
+        const body = { "id": customer.id, "fullname": customer.fullname, "reason": "Internal server error" };
+        res.end(JSON.stringify(body));
+    })
+})
+
+customer_controller.post("/staff/", (req, res) => {
+    const customer = req.body;
+    console.log(customer);
+    customer_db.update_customer_staff(customer).then(resolve => {
+        console.log(resolve);
+        res.writeHead(200, { 'Content-Type': 'text/json' });
+        const body = { "id": customer.id, "fullname": customer.fullname, "staff": customer.staff };
         res.end(JSON.stringify(body));
     }).catch(reject => {
         console.log(reject);

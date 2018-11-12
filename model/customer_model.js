@@ -26,21 +26,28 @@ exports.get = (id) => {
 
 exports.update_customer_address = customer => {
     console.log(`update_customer_address function: ${customer}`);
-    const query = `UPDATE \`customer\` SET \`address\`=${customer.address} WHERE \`id\` = ${customer.id}`;
+    const query = `UPDATE \`customer\` SET \`address\`=\"${customer.address}\" WHERE \`id\` = ${customer.id}`;
     console.log(`query = ${query}`);
     return database.query_db(query);
 }
 
 exports.update_customer_status = customer => {
     console.log(`update_customer_status function: ${customer}`);
-    const query = `UPDATE \`customer\` SET \`status\`=${customer.status} WHERE \`id\` = ${customer.id}`;
+    const query = `UPDATE \`customer\` SET \`status\`=\"${customer.status}\" WHERE \`id\` = ${customer.id}`;
     console.log(`query = ${query}`);
     return database.query_db(query);
 }
 
 exports.update_customer_note = customer => {
     console.log(`update_customer_note function: ${customer}`);
-    const query = `UPDATE \`customer\` SET \`note\`=${customer.note} WHERE \`id\` = ${customer.id}`;
+    const query = `UPDATE \`customer\` SET \`note\`=\"${customer.note}\" WHERE \`id\` = ${customer.id}`;
+    console.log(`query = ${query}`);
+    return database.query_db(query);
+}
+
+exports.update_customer_staff = customer => {
+    console.log(`update_customer_staff function: ${customer}`);
+    const query = `UPDATE \`customer\` SET \`staff\`=\"${customer.staff}\" WHERE \`id\` = ${customer.id}`;
     console.log(`query = ${query}`);
     return database.query_db(query);
 }
