@@ -4,12 +4,23 @@ const customer_controller = express.Router();
 const bodyParser = require('body-parser');
 customer_controller.use(bodyParser.json());
 
+var broadcastAll = require('../web_socket/staffs_ws').broadcastAll;
+
 
 customer_controller.put("/", (req, res) => {
     const customer = req.body;
     console.log(customer);
     customer_db.add_customer(customer).then(resolve => {
         console.log(resolve);
+
+        var c = {
+            topic: "customer",
+            event: "new",
+            customer: customer
+        }
+        var json = JSON.stringify(c);
+        broadcastAll(json);
+
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "id": customer.id, "fullname": customer.fullname, "status": customer.status };
         res.end(JSON.stringify(body));
@@ -55,6 +66,15 @@ customer_controller.post("/status/", (req, res) => {
     console.log(customer);
     customer_db.update_customer_status(customer).then(resolve => {
         console.log(resolve);
+
+        var c = {
+            topic: "customer",
+            event: "update_status",
+            customer: customer
+        }
+        var json = JSON.stringify(c);
+        broadcastAll(json);
+
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "id": customer.id, "fullname": customer.fullname, "status": customer.status };
         res.end(JSON.stringify(body));
@@ -71,6 +91,15 @@ customer_controller.post("/address/", (req, res) => {
     console.log(customer);
     customer_db.update_customer_address(customer).then(resolve => {
         console.log(resolve);
+
+        var c = {
+            topic: "customer",
+            event: "update_address",
+            customer: customer
+        }
+        var json = JSON.stringify(c);
+        broadcastAll(json);
+
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "id": customer.id, "fullname": customer.fullname, "address": customer.address };
         res.end(JSON.stringify(body));
@@ -87,6 +116,15 @@ customer_controller.post("/note/", (req, res) => {
     console.log(customer);
     customer_db.update_customer_note(customer).then(resolve => {
         console.log(resolve);
+
+        var c = {
+            topic: "customer",
+            event: "update_note",
+            customer: customer
+        }
+        var json = JSON.stringify(c);
+        broadcastAll(json);
+
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "id": customer.id, "fullname": customer.fullname, "note": customer.note };
         res.end(JSON.stringify(body));
@@ -103,6 +141,15 @@ customer_controller.post("/staff/", (req, res) => {
     console.log(customer);
     customer_db.update_customer_staff(customer).then(resolve => {
         console.log(resolve);
+
+        var c = {
+            topic: "customer",
+            event: "update_staff",
+            customer: customer
+        }
+        var json = JSON.stringify(c);
+        broadcastAll(json);
+
         res.writeHead(200, { 'Content-Type': 'text/json' });
         const body = { "id": customer.id, "fullname": customer.fullname, "staff": customer.staff };
         res.end(JSON.stringify(body));

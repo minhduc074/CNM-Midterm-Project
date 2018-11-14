@@ -10,7 +10,7 @@ const driver_db = require("../model/driver_model");
 const ticket = require("./ticket_controller");
 
 
-driver.put("/address/", verifyAccessToken, (req, res) => {
+driver.post("/address/", (req, res) => {
     const request = req.body;
 
     console.log("driver.address " + request.username + " " + request.address);
@@ -27,7 +27,7 @@ driver.put("/address/", verifyAccessToken, (req, res) => {
 
 })
 
-driver.get("/address/:username", verifyAccessToken, (req, res) => {
+driver.get("/address/:username", (req, res) => {
     var username = req.params.username;
 
     console.log("user.address" + username);

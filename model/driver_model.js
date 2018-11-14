@@ -1,4 +1,5 @@
 const database = require("./../db/sql_db");
+var moment = require("moment");
 
 
 find_driver = username => {
@@ -10,21 +11,22 @@ find_driver = username => {
 
 add_driver = (users) => {
     console.log(`add_driver function: ${users.username}`);
-    const query = `INSERT INTO \`driver\` (\`username\`, \`status\`, \`address\`, \`phone\`, \`password\`, \`fullname\`) VALUES ('${users.username}', '0','${users.address}','${users.phone}', '${users.password}', '${users.fullname}')`;
+    var rdt = moment().format('YYYY-MM-DD HH:mm:ss');
+    const query = `INSERT INTO \`driver\` (\`username\`, \`status\`, \`address\`, \`phone\`, \`password\`, \`fullname\`, \`updated_time\`) VALUES ('${users.username}', '0','${users.address}','${users.phone}', '${users.password}', '${users.fullname}', '${rdt}')`;
     console.log(`query = ${query}`);
     return database.query_db(query);
 }
 
 update_driver_address = (username, address) => {
     console.log(`driver update_driver_address function: ${username}`);
-    const query = `UPDATE \`driver\` SET \`address\`='${address}' WHERE \`driver_id\` = '${username}'`;
+    const query = `UPDATE \`driver\` SET \`address\`='${address}' WHERE \`username\` = '${username}'`;
     console.log(`query = ${query}`);
     return database.query_db(query);
 }
 
 get_driver_address = (username) => {
     console.log(`driver update_driver_address function: ${username}`);
-    const query = `SELECT \`address\` FROM \`driver\` WHERE \`driver_id\`='${username}'`;
+    const query = `SELECT \`address\` FROM \`driver\` WHERE \`username\`='${username}'`;
     console.log(`query = ${query}`);
     return database.query_db(query);
 }

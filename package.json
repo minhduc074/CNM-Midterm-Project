@@ -11,7 +11,9 @@
         "moment": "^2.22.2",
         "morgan": "^1.9.1",
         "mysql": "*",
-        "rand-token": "^0.4.0"
+        "rand-token": "^0.4.0",
+        "websocket": "^1.0.28",
+        "ws": "^6.1.0"
     },
     "main": "app.js",
     "scripts": {

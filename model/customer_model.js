@@ -26,7 +26,9 @@ exports.get = (id) => {
 
 exports.update_customer_address = customer => {
     console.log(`update_customer_address function: ${customer}`);
-    const query = `UPDATE \`customer\` SET \`address\`=\"${customer.address}\" WHERE \`id\` = ${customer.id}`;
+    var address = "{\"lat\":" + customer.lat + ",\"lng\":" + customer.lng + "}";
+    //"{"lat":10.85240602640846,"lng":106.62996014652708}"
+    const query = `UPDATE \`customer\` SET \`geocoding\`=\"${address}\" WHERE \`id\` = ${customer.id}`;
     console.log(`query = ${query}`);
     return database.query_db(query);
 }
