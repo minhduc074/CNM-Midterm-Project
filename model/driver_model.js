@@ -12,20 +12,20 @@ find_driver = username => {
 add_driver = (users) => {
     console.log(`add_driver function: ${users.username}`);
     var rdt = moment().format('YYYY-MM-DD HH:mm:ss');
-    const query = `INSERT INTO \`driver\` (\`username\`, \`status\`, \`address\`, \`phone\`, \`password\`, \`fullname\`, \`updated_time\`) VALUES ('${users.username}', '0','${users.address}','${users.phone}', '${users.password}', '${users.fullname}', '${rdt}')`;
+    const query = `INSERT INTO \`driver\` (\`username\`, \`status\`, \`address\`, \`geocoding\`, \`phone\`, \`password\`, \`fullname\`, \`updated_time\`) VALUES ('${users.username}', '0','${users.address}','${users.geocoding}','${users.phone}', '${users.password}', '${users.fullname}', '${rdt}')`;
     console.log(`query = ${query}`);
     return database.query_db(query);
 }
 
-update_driver_address = (username, address) => {
+update_driver_address = (username, address, geocoding) => {
     console.log(`driver update_driver_address function: ${username}`);
-    const query = `UPDATE \`driver\` SET \`address\`='${address}' WHERE \`username\` = '${username}'`;
+    const query = `UPDATE \`driver\` SET \`address\`='${address}', \`geocoding\`='${geocoding}' WHERE \`username\` = '${username}'`;
     console.log(`query = ${query}`);
     return database.query_db(query);
 }
 
 get_driver_address = (username) => {
-    console.log(`driver update_driver_address function: ${username}`);
+    console.log(`driver get_driver_address function: ${username}`);
     const query = `SELECT \`address\` FROM \`driver\` WHERE \`username\`='${username}'`;
     console.log(`query = ${query}`);
     return database.query_db(query);
@@ -74,14 +74,14 @@ exports.add_new = (users) => new Promise((resolve, reject) => {
     });
 });
 
-exports.update_address = (username, address) => new Promise((resolve, reject) => {
+exports.update_address = (username, address, geocoding) => new Promise((resolve, reject) => {
     console.log("driver:update_driver_address: Entry " + username + " " + address);
     find_driver(username).then(user => {
         console.log("driver:update_driver_address: " + user[0].username);
         if (Object.keys(user).length == 0) {
             reject("driver Cannot find this user");
         } else {
-            update_driver_address(username, address).then(update_driver_address_resolve => {
+            update_driver_address(username, address, geocoding).then(update_driver_address_resolve => {
                 console.log("driver update_driver_address_resolve " + update_driver_address_resolve);
                 resolve("driver update_driver_address successfully");
             }).catch(update_driver_address_reject => {
@@ -94,6 +94,14 @@ exports.update_address = (username, address) => new Promise((resolve, reject) =>
         reject();
     })
 })
+
+exports.get_all = () =>  {
+    console.log(`get_all function:`);
+    var rdt = moment().format('YYYY-MM-DD HH:mm:ss');
+    const query = `SELECT * FROM \`driver\``;
+    console.log(`query = ${query}`);
+    return database.query_db(query);
+}
 
 exports.get_address = (username) => new Promise((resolve, reject) => {
     console.log("driver:update_driver_address: Entry " + username);
