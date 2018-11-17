@@ -143,3 +143,24 @@ exports.update = (users) => new Promise((resolve, reject) => {
         reject("User doesn't exits");
     });
 });
+
+exports.update_status = (users) => new Promise((resolve, reject) => {
+    find_driver(users.username).then(find_user_resolve => {
+        console.log(find_user_resolve);
+        if (find_user_resolve.length > 0) {
+            console.log(`update function: ${users.username}`);
+            const query = `UPDATE \`driver\` SET \`status\`=\"${users.status}\" WHERE \`username\`=\"${users.username}\"`;
+            console.log(`query = ${query}`);
+            database.query_db(query).then(sql_resolve => {
+                console.log(sql_resolve);
+                resolve("Register successfully");
+            }).catch(sql_reject => {
+                reject(sql_reject)
+            })
+        } else {
+            reject("User doesn't exits");
+        }
+    }).catch(find_user_reject => {
+        reject("User doesn't exits");
+    });
+});
