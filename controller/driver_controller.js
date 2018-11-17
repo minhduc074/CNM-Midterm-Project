@@ -46,8 +46,20 @@ driver.find_driver = (lat_lng, rejected) => {
             console.log("driver_list: " + driver_list);
             var path = "/maps/api/distancematrix/json?units=imperial&origins=" + lat_lng.lat + "," + lat_lng.lng + "&destinations=";
 
+            console.log("deleted driver rejected");
+            for (var i = 0; i < rejected.length; i++) {
+                for (var j = 0; j < driver_list.length; j++) {
+                    if (rejected[i].username == driver_list[j].username)
+                       {
+                            console.log("deleted: " + driver_list[j].username);
+                           driver_list.splice(j, 1);
+                       }
+                }
+            }
+
             driver_list.forEach(d => {
                 console.log(d);
+
                 if (d.status != 0 && d.geocoding != "") {
                     var geocoding = JSON.parse(d.geocoding);
                     path += "" + geocoding.lat + ',' + geocoding.lng + '|';
@@ -60,13 +72,18 @@ driver.find_driver = (lat_lng, rejected) => {
                 method: 'GET'
             };
             console.log("path" + path);
-
+             var data = "";
             // Set up the request
             var post_req = http.request(post_options, function (res) {
                 res.setEncoding('utf8');
                 res.on('data', function (chunk) {
                     console.log('Response: ' + chunk);
-                    resolve(chunk);
+                    data += chunk;
+                    console.log("data: " + data[data.length-1] + "...");
+                    if(data[data.length-1] == '\n')
+                    {
+                        resolve(data);
+                    }
                 });
             });
 
@@ -84,16 +101,25 @@ driver.find_best_driver = (customer, rejected) => {
         lng: 106.74736888200073
     }
     */
-   var lat_lng = JSON.parse(customer.geocoding);
+    console.log("driver.find_best_driver");
+    var lat_lng = JSON.parse(customer.geocoding);
     var min_duration = -1;
-    driver.find_driver(lat_lng, 0).then(result => {
+    driver.find_driver(lat_lng, rejected).then(result => {
+        console.log(result);
         var result_str = JSON.parse(result);
         var ret;
+
+
 
         driver_db.get_all().then(driver_list => {
             for (var i = 0; i < driver_list.length; i++) {
                 if (driver_list[i].status == 0 || driver_list[i].geocoding == "") {
                     driver_list.splice(i, 1);
+                } else {
+                    rejected.forEach(element => {
+                        if (element.username == driver_list[i].username)
+                            driver_list.splice(i, 1);
+                    });
                 }
             }
             console.log(driver_list);
@@ -110,8 +136,7 @@ driver.find_best_driver = (customer, rejected) => {
                             min_duration = result_str.rows[0].elements[i].duration.value;
                             ret = driver_list[i];
                         }
-                    }
-                    else{
+                    } else {
                         console.log("Status is no OK");
                         console.log(result_str.rows[0].elements[i]);
                     }
@@ -122,7 +147,8 @@ driver.find_best_driver = (customer, rejected) => {
             var c = {
                 topic: "driver",
                 event: "new_customer",
-                customer: customer
+                customer: customer,
+                driver: rejected
             }
             var json = JSON.stringify(c);
             broadcast_driver(ret.username, json);
@@ -130,6 +156,21 @@ driver.find_best_driver = (customer, rejected) => {
     })
 
 }
+
+driver.post("/reject/", verifyAccessToken, (req, res) => {
+    console.log("driver.post(/reject/");
+    const request = req.body;
+
+    driver.find_best_driver(request.customer, request.driver);
+
+    res.writeHead(200, {
+        'Content-Type': 'text/json'
+    });
+    const body = {
+        "reason": "Rejected"
+    };
+    res.end(JSON.stringify(body));
+})
 
 driver.post("/address/", verifyAccessToken, (req, res) => {
     const request = req.body;

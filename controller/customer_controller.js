@@ -90,6 +90,7 @@ customer_controller.get("/:id", verifyAccessToken, (req, res) => {
 })
 
 customer_controller.post("/status/", verifyAccessToken, (req, res) => {
+    console.log("customer_controller.post/status");
     const customer = req.body;
     console.log(customer);
     customer_db.update_customer_status(customer).then(resolve => {
@@ -116,7 +117,7 @@ customer_controller.post("/status/", verifyAccessToken, (req, res) => {
         customer_db.get(customer.id).then(address => {
             console.log("customer_db.get_customer_address");
             console.log(address[0]);
-            var rejected = [];
+            var rejected = [{username: "1234"}];
             driver_controller.find_best_driver(address[0], rejected);
         })
     }).catch(reject => {
