@@ -60,7 +60,7 @@ driver.find_driver = (lat_lng, rejected) => {
             driver_list.forEach(d => {
                 console.log(d);
 
-                if (d.status != 0 && d.geocoding != "") {
+                if (d.status == 1 && d.geocoding != "") {
                     var geocoding = JSON.parse(d.geocoding);
                     path += "" + geocoding.lat + ',' + geocoding.lng + '|';
                 }
@@ -327,6 +327,34 @@ driver.post("/update/", verifyAccessToken, (req, res) => {
         res.end(JSON.stringify(body));
     })
 });
+
+driver.post("/status/", (req, res) => {
+    const users = req.body;
+    console.log(users);
+    console.log(`driver.post status ${users.username} ${users.status}`);
+
+    driver_db.update_status(users).then(resolve => {
+        //console.log(resolve);
+        res.writeHead(200, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "username": users.username,
+            "reason": "Update successfully"
+        };
+        res.end(JSON.stringify(body));
+    }).catch(reject => {
+        console.log(reject);
+        res.writeHead(500, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "username": users.username,
+            "reason": "Internal server error"
+        };
+        res.end(JSON.stringify(body));
+    })
+})
 
 driver.post("/logout/", verifyAccessToken, (req, res) => {
     const users = req.body;
