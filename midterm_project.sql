@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2018 at 12:49 PM
--- Server version: 10.1.36-MariaDB
--- PHP Version: 7.2.10
+-- Generation Time: Nov 17, 2018 at 01:03 PM
+-- Server version: 10.1.34-MariaDB
+-- PHP Version: 7.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -48,8 +48,20 @@ CREATE TABLE `customer` (
 INSERT INTO `customer` (`id`, `fullname`, `phone`, `address`, `geocoding`, `note`, `status`, `staff`, `driver`, `create_time`) VALUES
 (1, '1', '123456789', 'asd/123v/123asd', NULL, 'somethings', 1, '', '', '2018-11-01 19:26:12'),
 (2, 'customer1', '123456789', 'asd/123v/123asd', NULL, 'somethings', 1, '', '', '2018-11-01 19:32:34'),
-(3, 'customer1', '123456789', 'asd/123v/123asd', '{\"lat\":10.852237435070418,\"lng\":106.62910183964232}', 'somethings', 2, '', '', '2018-11-01 19:33:30'),
-(7, 'Bùi Minh Đức', '+84963055407', 'Đường Số 2, Công Viên Phần Mềm Quang Trung, Phường Tân Chánh Hiệp, Quận 12', NULL, '123123', 2, '', '', '2018-11-13 15:42:47');
+(3, 'customer1', '123456789', 'asd/123v/123asd', '{\"lat\":10.852237435070418,\"lng\":106.62910183964232}', 'somethings', 1, '', '', '2018-11-01 19:33:30'),
+(7, 'Bùi Minh Đức', '+84963055407', 'Đường Số 2, Công Viên Phần Mềm Quang Trung, Phường Tân Chánh Hiệp, Quận 12', NULL, '123123', 2, '', '', '2018-11-13 15:42:47'),
+(8, 'Customer1', '0123456', 'adsresc', NULL, 'note 1', 1, 'staff 1', 'driver 1', '2018-11-17 09:54:42'),
+(9, 'Customer1', '0123456', 'adsresc', NULL, 'note 1', 1, 'staff 1', 'driver 1', '2018-11-17 09:56:25'),
+(10, 'Customer1', '0123456', 'adsresc', NULL, 'note 1', 1, 'staff 1', 'driver 1', '2018-11-17 09:57:36'),
+(11, 'Customer1', '0123456', 'adsresc', NULL, 'note 1', 1, 'staff 1', 'driver 1', '2018-11-17 09:58:45'),
+(12, 'Customer1', '0123456', 'adsresc', NULL, 'note 1', 1, 'staff 1', 'driver 1', '2018-11-17 09:59:26'),
+(13, 'Customer1', '0123456', 'adsresc', NULL, 'note 1', 1, 'staff 1', 'driver 1', '2018-11-17 10:00:02'),
+(14, 'Customer1', '0123456', 'adsresc', NULL, 'note 1', 1, 'staff 1', 'driver 1', '2018-11-17 10:02:21'),
+(15, 'Customer1', '0123456', 'adsresc', NULL, 'note 1', 1, 'staff 1', 'driver 1', '2018-11-17 10:05:50'),
+(16, 'Customer1', '0123456', 'adsresc', NULL, 'note 1', 1, 'staff 1', 'driver 1', '2018-11-17 10:08:38'),
+(17, 'new customer 1', '0011223344', 'Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam', NULL, 'new note 1', 0, '', '', '2018-11-17 13:23:14'),
+(18, 'New customer 2', '00221133', 'Thủ Đức, Ho Chi Minh City, Vietnam', NULL, 'Note1', 0, '', '', '2018-11-17 13:26:26'),
+(19, 'New Customer 2', '1234123', 'Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam', NULL, 'sdsaxzc', 0, '', '', '2018-11-17 13:31:06');
 
 -- --------------------------------------------------------
 
@@ -61,6 +73,7 @@ CREATE TABLE `driver` (
   `username` varchar(255) NOT NULL,
   `status` int(11) NOT NULL,
   `address` varchar(2000) NOT NULL,
+  `geocoding` varchar(255) NOT NULL,
   `phone` varchar(64) NOT NULL,
   `password` varchar(255) NOT NULL,
   `fullname` varchar(255) NOT NULL,
@@ -71,10 +84,10 @@ CREATE TABLE `driver` (
 -- Dumping data for table `driver`
 --
 
-INSERT INTO `driver` (`username`, `status`, `address`, `phone`, `password`, `fullname`, `updated_time`) VALUES
-('admin1', 0, 'address', '', '123456', '', '0000-00-00 00:00:00'),
-('driver1', 0, 'undefined', '+1 510 803 7664', '123456', 'Bùi Minh Đức', '0000-00-00 00:00:00'),
-('driver3', 0, 'A174 Tổ 15A Kp2, Đông Hưng Thuận, Quận 12, Hồ Chí Minh, Vietnam', '+849630554071234', '123', 'Bùi Minh Đức', '0000-00-00 00:00:00');
+INSERT INTO `driver` (`username`, `status`, `address`, `geocoding`, `phone`, `password`, `fullname`, `updated_time`) VALUES
+('admin1', 0, 'address', '{\"lat\":10.85136292304024,\"lng\":106.69537735089773}', '', '123456', '', '0000-00-00 00:00:00'),
+('driver1', 1, '63 Linh Trung, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam', '{\"lat\":10.856984850355982,\"lng\":106.75733492735344}', '+1 510 803 7664', '123456', 'Bùi Minh Đức', '0000-00-00 00:00:00'),
+('driver3', 1, '94, Đường Số 6, Phường Linh Trung, Quận Thủ Đức, Thành Phố Hồ Chí Minh, Thành Phố Hồ Chí Minh, Phường Linh Trung, Thủ Đức, Hồ Chí Minh, Vietnam', '{\"lat\":10.85136292304024,\"lng\":106.69537735089773}', '+849630554071234', '123', 'Bùi Minh Đức', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -93,10 +106,14 @@ CREATE TABLE `ticket` (
 --
 
 INSERT INTO `ticket` (`user_id`, `token`, `release_date`) VALUES
-('driver_driver1', 'jSlHE2XCVdTnh1RycSPINLg7Ch5AHi7Hvx7VCLlvW9dwL7uwm1nhaWNneKwifd0grvvrz4lsuH0we5C0', '2018-11-07 14:09:03'),
-('driver_driver3', 'J13UwPi6BFX1WPyTVNfRrlI4YvmP6G9cV5klmnv6jn1ZhOxU7nZXdCqO511uHMtkupHhwxZMDzl4iNhD', '2018-11-14 11:58:38'),
-('staff_staff1', 'MhNeao9v2lB1yyeYPy4oBjsmV8NndHXyiGBDpqqDwS4OXmRITRAXN3XKwMyoO1ZEC953ORH3hSl5BerR', '2018-11-14 17:58:29'),
-('staff_staff2', 'hnhNOGxE7f1DeNSdW79MhOBOb0bK4bgAQz1zXyUmtt1sRO9XottxZiBizRheOivJfZTuujCC7NexSbLc', '2018-11-12 19:03:23'),
+('driver_admin1', 'bnpXFw5sCGwND2pX3Vq23DMTxBi1NzYMdaauI5iOnwa09BpUWSY3Q4NcjGoY2loy3EGauRLp7WXE409L', '2018-11-17 18:54:08'),
+('driver_driver1', 'MAu1n90TCJV3oAthbydIKpbeMJxVJwJ3tPVX61cYydG8GVyuxbysH93qQRbChzF4dVPGmok0NlVAETBn', '2018-11-17 18:56:48'),
+('driver_driver3', '3lC2vVxRp3LVttlnbXrsCULryKU6gNYfSDZjSt7TKgJx9YV09H8EfpDq9RAu0IzSrgoV2QfO9x5oLmi9', '2018-11-17 18:53:13'),
+('staff_admin1', 'UUG1iIqViDFgt3j1sW6Ks2aLUxm5QOG9T2nyjeKKc4VhBVxBxWNePNGvz1KN3leUVOeAlhZQvWMPAfYt', '2018-11-17 19:01:46'),
+('staff_r1', 'GvruLqgHeX9JNAaZerSZf45wq8UYAdg4AH09v4tQanmFbL004ySuJgSlVuWDf908yXTZ7NHsmgmbOzMg', '2018-11-17 16:02:04'),
+('staff_r2', 'drMQfzgpZd3DBlqL3uXcvyBT5HWe8osZPTYCjV0f6oUEJEUlUPIg4SGv5TWq7KEiBsQL8E1h8Gl37L00', '2018-11-17 13:30:28'),
+('staff_staff1', 'eQJGBuiulvITgZFLKygqe9qOP6zxjUMq755QYeKUksTXFgqHKCQaP4GZSqirARD5tvnQKryIL1Uc9Y5d', '2018-11-15 20:48:38'),
+('staff_staff2', 'wJQL6rnzMWKwQdDpiu1HY68TbqO0aPEllccKrr90eui7FyhBU8qzXGQOjnMxERd28oaf9tAVelhVUs5Q', '2018-11-17 10:08:24'),
 ('staff_staff3', '1dHEfrWx7HNSCUjSTYNsnZPO60DyCOEtKEklt3egGIwi7dIcpkr2sawwjd3Sr8e8vlEJHHM517yOjDaJ', '2018-11-13 16:40:31');
 
 -- --------------------------------------------------------
@@ -119,6 +136,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`username`, `password`, `fullname`, `role`) VALUES
 ('admin', '123456', 'administrator', 1),
 ('admin1', '123456', 'fullname345341', 0),
+('r1', '123456', 'Bùi Minh Đức', 2),
+('r2', '123456', 'Bùi Minh Đức', 2),
 ('staff1', '123', 'Bùi Minh Đức', 1),
 ('staff2', '123456', 'Bùi Minh Đức', 2),
 ('staff3', '123', 'Bùi Minh Đức', 3);
@@ -159,7 +178,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
