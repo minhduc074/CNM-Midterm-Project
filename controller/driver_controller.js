@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 driver.use(bodyParser.json());
 
 const verifyAccessToken = require('./ticket_controller').verifyAccessToken;
+const broadcast_driver = require('../web_socket/staffs_ws').broadcast_driver;
 
 const driver_db = require("../model/driver_model");
 const ticket = require("./ticket_controller");
@@ -76,56 +77,65 @@ driver.find_driver = (lat_lng, rejected) => {
 
 }
 
-driver.get("/customer/", (req, res) => {
+driver.find_best_driver = (customer, rejected) => {
+    /*
     var lat_lng = {
         lat: 10.851766363393738,
         lng: 106.74736888200073
     }
+    */
+   var lat_lng = JSON.parse(customer.geocoding);
     var min_duration = -1;
     driver.find_driver(lat_lng, 0).then(result => {
         var result_str = JSON.parse(result);
         var ret;
 
         driver_db.get_all().then(driver_list => {
-            for(var i = 0; i < driver_list.length; i++)
-            {
+            for (var i = 0; i < driver_list.length; i++) {
                 if (driver_list[i].status == 0 || driver_list[i].geocoding == "") {
-                    driver_list.splice(i,1);
+                    driver_list.splice(i, 1);
                 }
             }
             console.log(driver_list);
-            console.log(result_str.rows[0].elements.length);
-            for(var i = 0; i < result_str.rows[0].elements.length; i++)
-            {
-                console.log("i=" +i);
-                console.log(driver_list[i]);
-                if (min_duration == -1)
-                    {
-                        ret = driver_list[i];
-                        min_duration = result_str.rows[0].elements[i].duration.value;
+            console.log(result_str.rows[0].elements.length); {
+                for (var i = 0; i < result_str.rows[0].elements.length; i++) {
+                    if (result_str.rows[0].elements[i].status = "OK") {
+                        console.log("i=" + i);
+                        console.log(driver_list[i]);
+                        if (min_duration == -1) {
+                            ret = driver_list[i];
+                            min_duration = result_str.rows[0].elements[i].duration.value;
+                        }
+                        if (min_duration > result_str.rows[0].elements[i].duration.value) {
+                            min_duration = result_str.rows[0].elements[i].duration.value;
+                            ret = driver_list[i];
+                        }
                     }
-                if (min_duration > result_str.rows[0].elements[i].duration.value)
-                    {
-                        min_duration = result_str.rows[0].elements[i].duration.value;
-                        ret = driver_list[i];
+                    else{
+                        console.log("Status is no OK");
+                        console.log(result_str.rows[0].elements[i]);
                     }
+                }
             }
 
             console.log(ret);
-            res.writeHead(200, {
-                'Content-Type': 'text/json'
-            });
-            res.end(JSON.stringify(ret));
+            var c = {
+                topic: "driver",
+                event: "new_customer",
+                customer: customer
+            }
+            var json = JSON.stringify(c);
+            broadcast_driver(ret.username, json);
         })
     })
 
-})
+}
 
 driver.post("/address/", (req, res) => {
     const request = req.body;
 
     console.log("driver.address " + request.username + " " + request.address);
-    var geocoding = "{\"lat\":" + request.lat + ",\"lng\":" + request.lat + "}"
+    var geocoding = "{\"lat\":" + request.lat + ",\"lng\":" + request.lng + "}"
     driver_db.update_address(request.username, request.address, geocoding).then(resolve => {
 
         res.writeHead(200, {

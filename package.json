@@ -12,6 +12,7 @@
         "morgan": "^1.9.1",
         "mysql": "*",
         "rand-token": "^0.4.0",
+        "socket.io": "^2.1.1",
         "websocket": "^1.0.28",
         "ws": "^6.1.0"
     },

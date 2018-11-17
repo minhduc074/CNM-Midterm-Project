@@ -3,8 +3,10 @@ const express = require('express');
 const customer_controller = express.Router();
 const bodyParser = require('body-parser');
 customer_controller.use(bodyParser.json());
+const driver_controller = require("./driver_controller");
 
-var broadcastAll = require('../web_socket/staffs_ws').broadcastAll;
+const broadcast_all_staff = require('../web_socket/staffs_ws').broadcast_all_staff;
+const broadcast_driver = require('../web_socket/staffs_ws').broadcast_driver;
 
 
 customer_controller.put("/", (req, res) => {
@@ -19,15 +21,26 @@ customer_controller.put("/", (req, res) => {
             customer: customer
         }
         var json = JSON.stringify(c);
-        broadcastAll(json);
+        broadcast_all_staff(json);
 
-        res.writeHead(200, { 'Content-Type': 'text/json' });
-        const body = { "id": customer.id, "fullname": customer.fullname, "status": customer.status };
+        res.writeHead(200, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "id": customer.id,
+            "fullname": customer.fullname,
+            "status": customer.status
+        };
         res.end(JSON.stringify(body));
     }).catch(reject => {
         console.log(reject);
-        res.writeHead(500, { 'Content-Type': 'text/json' });
-        const body = { "fullname": customer.fullname, "reason": "Internal server error" };
+        res.writeHead(500, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "fullname": customer.fullname,
+            "reason": "Internal server error"
+        };
         res.end(JSON.stringify(body));
     });
 })
@@ -35,13 +48,20 @@ customer_controller.put("/", (req, res) => {
 customer_controller.get("/", (req, res) => {
     customer_db.get_all().then(resolve => {
         console.log(resolve);
-        res.writeHead(200, { 'Content-Type': 'text/json' });
+        res.writeHead(200, {
+            'Content-Type': 'text/json'
+        });
         //const body = { "id": cutomer.id, "fullname": customer.fullname, "status": customer.status };
         res.end(JSON.stringify(resolve));
     }).catch(reject => {
         console.log(reject);
-        res.writeHead(500, { 'Content-Type': 'text/json' });
-        const body = { "fullname": customer.fullname, "reason": "Internal server error" };
+        res.writeHead(500, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "fullname": customer.fullname,
+            "reason": "Internal server error"
+        };
         res.end(JSON.stringify(body));
     });
 })
@@ -50,13 +70,20 @@ customer_controller.get("/:id", (req, res) => {
     var id = req.params.id;
     customer_db.get(id).then(resolve => {
         console.log(resolve);
-        res.writeHead(200, { 'Content-Type': 'text/json' });
+        res.writeHead(200, {
+            'Content-Type': 'text/json'
+        });
         //const body = { "id": cutomer.id, "fullname": customer.fullname, "status": customer.status };
         res.end(JSON.stringify(resolve));
     }).catch(reject => {
         console.log(reject);
-        res.writeHead(500, { 'Content-Type': 'text/json' });
-        const body = { "fullname": customer.fullname, "reason": "Internal server error" };
+        res.writeHead(500, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "fullname": customer.fullname,
+            "reason": "Internal server error"
+        };
         res.end(JSON.stringify(body));
     });
 })
@@ -73,15 +100,34 @@ customer_controller.post("/status/", (req, res) => {
             customer: customer
         }
         var json = JSON.stringify(c);
-        broadcastAll(json);
+        broadcast_all_staff(json);
 
-        res.writeHead(200, { 'Content-Type': 'text/json' });
-        const body = { "id": customer.id, "fullname": customer.fullname, "status": customer.status };
+        res.writeHead(200, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "id": customer.id,
+            "fullname": customer.fullname,
+            "status": customer.status
+        };
         res.end(JSON.stringify(body));
+
+        customer_db.get(customer.id).then(address => {
+            console.log("customer_db.get_customer_address");
+            console.log(address[0]);
+            var rejected = [];
+            driver_controller.find_best_driver(address[0], rejected);
+        })
     }).catch(reject => {
         console.log(reject);
-        res.writeHead(500, { 'Content-Type': 'text/json' });
-        const body = { "id": customer.id, "fullname": customer.fullname, "reason": "Internal server error" };
+        res.writeHead(500, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "id": customer.id,
+            "fullname": customer.fullname,
+            "reason": "Internal server error"
+        };
         res.end(JSON.stringify(body));
     })
 })
@@ -98,15 +144,27 @@ customer_controller.post("/address/", (req, res) => {
             customer: customer
         }
         var json = JSON.stringify(c);
-        broadcastAll(json);
+        broadcast_all_staff(json);
 
-        res.writeHead(200, { 'Content-Type': 'text/json' });
-        const body = { "id": customer.id, "fullname": customer.fullname, "address": customer.address };
+        res.writeHead(200, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "id": customer.id,
+            "fullname": customer.fullname,
+            "address": customer.address
+        };
         res.end(JSON.stringify(body));
     }).catch(reject => {
         console.log(reject);
-        res.writeHead(500, { 'Content-Type': 'text/json' });
-        const body = { "id": cutomer.id, "fullname": customer.fullname, "reason": "Internal server error" };
+        res.writeHead(500, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "id": cutomer.id,
+            "fullname": customer.fullname,
+            "reason": "Internal server error"
+        };
         res.end(JSON.stringify(body));
     })
 })
@@ -123,15 +181,27 @@ customer_controller.post("/note/", (req, res) => {
             customer: customer
         }
         var json = JSON.stringify(c);
-        broadcastAll(json);
+        broadcast_all_staff(json);
 
-        res.writeHead(200, { 'Content-Type': 'text/json' });
-        const body = { "id": customer.id, "fullname": customer.fullname, "note": customer.note };
+        res.writeHead(200, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "id": customer.id,
+            "fullname": customer.fullname,
+            "note": customer.note
+        };
         res.end(JSON.stringify(body));
     }).catch(reject => {
         console.log(reject);
-        res.writeHead(500, { 'Content-Type': 'text/json' });
-        const body = { "id": customer.id, "fullname": customer.fullname, "reason": "Internal server error" };
+        res.writeHead(500, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "id": customer.id,
+            "fullname": customer.fullname,
+            "reason": "Internal server error"
+        };
         res.end(JSON.stringify(body));
     })
 })
@@ -148,15 +218,27 @@ customer_controller.post("/staff/", (req, res) => {
             customer: customer
         }
         var json = JSON.stringify(c);
-        broadcastAll(json);
+        broadcast_all_staff(json);
 
-        res.writeHead(200, { 'Content-Type': 'text/json' });
-        const body = { "id": customer.id, "fullname": customer.fullname, "staff": customer.staff };
+        res.writeHead(200, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "id": customer.id,
+            "fullname": customer.fullname,
+            "staff": customer.staff
+        };
         res.end(JSON.stringify(body));
     }).catch(reject => {
         console.log(reject);
-        res.writeHead(500, { 'Content-Type': 'text/json' });
-        const body = { "id": customer.id, "fullname": customer.fullname, "reason": "Internal server error" };
+        res.writeHead(500, {
+            'Content-Type': 'text/json'
+        });
+        const body = {
+            "id": customer.id,
+            "fullname": customer.fullname,
+            "reason": "Internal server error"
+        };
         res.end(JSON.stringify(body));
     })
 })
