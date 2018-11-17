@@ -7,9 +7,10 @@ const driver_controller = require("./driver_controller");
 
 const broadcast_all_staff = require('../web_socket/staffs_ws').broadcast_all_staff;
 const broadcast_driver = require('../web_socket/staffs_ws').broadcast_driver;
+const verifyAccessToken = require('./ticket_controller').verifyAccessToken;
 
 
-customer_controller.put("/", (req, res) => {
+customer_controller.put("/", verifyAccessToken, (req, res) => {
     const customer = req.body;
     console.log(customer);
     customer_db.add_customer(customer).then(resolve => {
@@ -45,7 +46,7 @@ customer_controller.put("/", (req, res) => {
     });
 })
 
-customer_controller.get("/", (req, res) => {
+customer_controller.get("/", verifyAccessToken, (req, res) => {
     customer_db.get_all().then(resolve => {
         console.log(resolve);
         res.writeHead(200, {
@@ -66,7 +67,7 @@ customer_controller.get("/", (req, res) => {
     });
 })
 
-customer_controller.get("/:id", (req, res) => {
+customer_controller.get("/:id", verifyAccessToken, (req, res) => {
     var id = req.params.id;
     customer_db.get(id).then(resolve => {
         console.log(resolve);
@@ -88,7 +89,7 @@ customer_controller.get("/:id", (req, res) => {
     });
 })
 
-customer_controller.post("/status/", (req, res) => {
+customer_controller.post("/status/", verifyAccessToken, (req, res) => {
     const customer = req.body;
     console.log(customer);
     customer_db.update_customer_status(customer).then(resolve => {
@@ -132,7 +133,7 @@ customer_controller.post("/status/", (req, res) => {
     })
 })
 
-customer_controller.post("/address/", (req, res) => {
+customer_controller.post("/address/", verifyAccessToken, (req, res) => {
     const customer = req.body;
     console.log(customer);
     customer_db.update_customer_address(customer).then(resolve => {
@@ -169,7 +170,7 @@ customer_controller.post("/address/", (req, res) => {
     })
 })
 
-customer_controller.post("/note/", (req, res) => {
+customer_controller.post("/note/", verifyAccessToken, (req, res) => {
     const customer = req.body;
     console.log(customer);
     customer_db.update_customer_note(customer).then(resolve => {
@@ -206,7 +207,7 @@ customer_controller.post("/note/", (req, res) => {
     })
 })
 
-customer_controller.post("/staff/", (req, res) => {
+customer_controller.post("/staff/", verifyAccessToken, (req, res) => {
     const customer = req.body;
     console.log(customer);
     customer_db.update_customer_staff(customer).then(resolve => {

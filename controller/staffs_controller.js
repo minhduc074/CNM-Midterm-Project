@@ -7,6 +7,7 @@ staffs.use(bodyParser.json());
 
 const staffs_db = require("../model/staffs_model");
 const ticket = require("./ticket_controller");
+const verifyAccessToken = require('./ticket_controller').verifyAccessToken;
 
 staffs.post("/login/", (req, res) => {
     const body = req.body;
@@ -61,7 +62,7 @@ staffs.post("/register/", (req, res) => {
     })
 });
 
-staffs.post("/logout/", (req, res) => {
+staffs.post("/logout/", verifyAccessToken, (req, res) => {
     const users = req.body;
     console.log(users);
     console.log(`user.post ${users.username} ${users.password}`);
@@ -79,7 +80,7 @@ staffs.post("/logout/", (req, res) => {
     })
 });
 
-staffs.post("/update/", (req, res) => {
+staffs.post("/update/", verifyAccessToken, (req, res) => {
     const users = req.body;
     console.log(users);
     console.log(`user.post ${users.username} ${users.password}`);

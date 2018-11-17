@@ -131,7 +131,7 @@ driver.find_best_driver = (customer, rejected) => {
 
 }
 
-driver.post("/address/", (req, res) => {
+driver.post("/address/", verifyAccessToken, (req, res) => {
     const request = req.body;
 
     console.log("driver.address " + request.username + " " + request.address);
@@ -159,7 +159,7 @@ driver.post("/address/", (req, res) => {
 
 })
 
-driver.get("/address/:username", (req, res) => {
+driver.get("/address/:username", verifyAccessToken, (req, res) => {
     var username = req.params.username;
 
     console.log("user.address" + username);
@@ -259,7 +259,7 @@ driver.post("/register/", (req, res) => {
     })
 });
 
-driver.post("/update/", (req, res) => {
+driver.post("/update/", verifyAccessToken, (req, res) => {
     const users = req.body;
     console.log(users);
     console.log(`driver.post ${users.username} ${users.password}`);
@@ -287,7 +287,7 @@ driver.post("/update/", (req, res) => {
     })
 });
 
-driver.post("/logout/", (req, res) => {
+driver.post("/logout/", verifyAccessToken, (req, res) => {
     const users = req.body;
     console.log(users);
     console.log(`user.post ${users.username} ${users.password}`);
