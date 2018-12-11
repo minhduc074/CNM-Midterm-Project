@@ -35,6 +35,7 @@ exports.query_db = sql => {
                 reject(err);
             } else {
                 console.log(`row: ${rows}`);
+                console.log(rows);
                 resolve(rows);
             }
 

@@ -17,7 +17,8 @@ customer_controller.put("/", verifyAccessToken, (req, res) => {
     .add_customer(customer)
     .then(resolve => {
       console.log(resolve);
-
+      console.log("reslove");
+      customer.id = resolve.insertId;
       var c = {
         topic: "customer",
         event: "new",
