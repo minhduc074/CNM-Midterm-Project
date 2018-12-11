@@ -268,4 +268,44 @@ customer_controller.post("/staff/", verifyAccessToken, (req, res) => {
     });
 });
 
+customer_controller.post("/driver/", verifyAccessToken, (req, res) => {
+  const customer = req.body;
+  console.log(customer);
+  customer_db
+    .update_customer_driver(customer)
+    .then(resolve => {
+      console.log(resolve);
+
+      var c = {
+        topic: "customer",
+        event: "update_driver",
+        customer: customer
+      };
+      var json = JSON.stringify(c);
+      broadcast_all_staff(json);
+
+      res.writeHead(200, {
+        "Content-Type": "text/json"
+      });
+      const body = {
+        id: customer.id,
+        fullname: customer.fullname,
+        driver: customer.driver
+      };
+      res.end(JSON.stringify(body));
+    })
+    .catch(reject => {
+      console.log(reject);
+      res.writeHead(500, {
+        "Content-Type": "text/json"
+      });
+      const body = {
+        id: customer.id,
+        fullname: customer.fullname,
+        reason: "Internal server error"
+      };
+      res.end(JSON.stringify(body));
+    });
+});
+
 module.exports = customer_controller;

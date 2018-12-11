@@ -29,8 +29,9 @@ exports.get = id => {
 
 exports.update_customer_address = customer => {
   console.log(`update_customer_address function: ${customer}`);
+  var LatLng = JSON.parse(customer.address);
   //var address = "{" + "lat:" + customer.lat + ",lng:" + customer.lng + "}";
-  var address = '{"lat":' + customer.lat + ',"lng":' + customer.lng + "}";
+  var address = '{"lat":' + LatLng.lat + ',"lng":' + LatLng.lng + "}";
   const query = `UPDATE \`customer\` SET  \`geocoding\`='${address}' WHERE \`id\` = ${
     customer.id
   }`;
@@ -72,6 +73,15 @@ exports.update_customer_staff = customer => {
   const query = `UPDATE \`customer\` SET \`staff\`=\"${
     customer.staff
   }\" WHERE \`id\` = ${customer.id}`;
+  console.log(`query = ${query}`);
+  return database.query_db(query);
+};
+
+exports.update_customer_driver = customer => {
+  console.log(`update_customer_driver function: ${customer}`);
+  const query = `UPDATE \`customer\` SET \`driver\`=\"${
+    customer.driver
+  }\" WHERE \`id\` = ${customer.customer}`;
   console.log(`query = ${query}`);
   return database.query_db(query);
 };

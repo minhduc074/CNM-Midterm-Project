@@ -4,7 +4,7 @@ var rndToken = require('rand-token');
 var ticket_db = require("../model/tickets_model");
 
 const SECRET = 'ABCDEF';
-const AC_LIFETIME = 600; // seconds
+const AC_LIFETIME = 6000; // seconds
 
 exports.generateAccessToken = userEntity => {
     var payload = {
